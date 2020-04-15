@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_sm"
+        android:paddingTop="@dimen/padding_xs"
+        android:paddingEnd="@dimen/padding_sm"
+        android:paddingBottom="@dimen/padding_xs">
+
+        <androidx.cardview.widget.CardView
+            style="@style/CardViewStyle"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/CoverImageViewStyle"
+                    android:src="@drawable/img_sw_4"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout style="@style/CardFavoriteLinearLayoutStyle">
+
+                    <ImageView
+                        style="@style/IcFavoriteStyle"
+                        android:onClick="onFavoriteClick"
+                        android:src="@drawable/ic_favorite_check"
+                        android:tag="0"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/CardContentLinearLayoutStyle">
+
+                    <TextView
+                        android:id="@+id/title_0_text_view"
+                        style="@style/TitleTextViewStyle"
+                        android:text="@string/sw_4_title" />
+
+                    <Button
+                        style="@style/ButtonStyle"
+                        android:onClick="onDetailClick"
+                        android:tag="0"
+                        android:text="@string/details" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            style="@style/CardViewStyle"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/CoverImageViewStyle"
+                    android:src="@drawable/img_sw_5"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout style="@style/CardFavoriteLinearLayoutStyle">
+
+                    <ImageView
+                        style="@style/IcFavoriteStyle"
+                        android:onClick="onFavoriteClick"
+                        android:src="@drawable/ic_favorite_check"
+                        android:tag="1"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/CardContentLinearLayoutStyle">
+
+                    <TextView
+                        android:id="@+id/title_1_text_view"
+                        style="@style/TitleTextViewStyle"
+                        android:text="@string/sw_5_title" />
+
+                    <Button
+                        style="@style/ButtonStyle"
+                        android:onClick="onDetailClick"
+                        android:tag="1"
+                        android:text="@string/details" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            style="@style/CardViewStyle"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/CoverImageViewStyle"
+                    android:src="@drawable/img_sw_6"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout style="@style/CardFavoriteLinearLayoutStyle">
+
+                    <ImageView
+                        style="@style/IcFavoriteStyle"
+                        android:onClick="onFavoriteClick"
+                        android:src="@drawable/ic_favorite_check"
+                        android:tag="2"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/CardContentLinearLayoutStyle">
+
+                    <TextView
+                        android:id="@+id/title_2_text_view"
+                        style="@style/TitleTextViewStyle"
+                        android:text="@string/sw_6_title" />
+
+                    <Button
+                        style="@style/ButtonStyle"
+                        android:onClick="onDetailClick"
+                        android:tag="2"
+                        android:text="@string/details" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>
