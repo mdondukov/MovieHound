@@ -5,4 +5,9 @@
     <string name="sw_6_title">Звездные Войны Эпизод VI: Возвращение Джедая</string>
     <string name="details">Детали</string>
     <string name="share">Пригласить друга</string>
+    <string name="desc">И девятнадцать лет спустя мир находится в состоянии войны. Джедаи уничтожены почти полностью, и только надежда на сформированное Сопротивление еще дает шанс этому миру на спасение.</string>
+    <string name="description">Описание</string>
+    <string name="comment">Комментарий</string>
+    <string name="hint_message">Введите текст</string>
+    <string name="save">Сохранить</string>
 </resources>

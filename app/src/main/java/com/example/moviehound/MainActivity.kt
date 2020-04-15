@@ -1,5 +1,6 @@
 package com.example.moviehound
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
         when ((view.tag as String).toInt()) {
             0 -> {
                 changeTitleColor(mTitle0TextView)
-                //TODO Start Detail Activity
+                val intent = Intent(this, DetailActivity::class.java)
+                startActivity(intent)
             }
             1 -> {
                 changeTitleColor(mTitle1TextView)

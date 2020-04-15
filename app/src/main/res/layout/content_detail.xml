@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".DetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_sm"
+        android:paddingTop="@dimen/padding_xs"
+        android:paddingEnd="@dimen/padding_sm"
+        android:paddingBottom="@dimen/padding_xs">
+
+        <androidx.cardview.widget.CardView
+            style="@style/CardViewStyle"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/CoverImageViewStyle"
+                    android:layout_height="@dimen/cover_detail_height"
+                    android:src="@drawable/img_sw_4"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    android:layout_gravity="top|end">
+
+                    <ImageView
+                        style="@style/OverloadIconStyle"
+                        android:onClick="onFavoriteClick"
+                        android:src="@drawable/ic_favorite_check"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    android:layout_gravity="bottom|start">
+
+                    <ImageView
+                        style="@style/OverloadIconStyle"
+                        android:onClick="onShareClick"
+                        android:src="@drawable/ic_share_white"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_md"
+            android:layout_marginBottom="@dimen/margin_xs"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_text_view"
+                style="@style/TitleTextViewStyle"
+                android:text="@string/sw_4_title"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_md"
+                android:layout_marginBottom="@dimen/margin_xs"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:text="@string/description"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/content_text_size" />
+
+            <TextView
+                android:id="@+id/desc_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="@string/desc"
+                android:textSize="@dimen/content_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/comment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_md"
+                app:hintTextAppearance="@style/CommentHintTextStyle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:hint="@string/comment"
+                    android:textColor="@android:color/darker_gray"
+                    android:theme="@style/CommentEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
