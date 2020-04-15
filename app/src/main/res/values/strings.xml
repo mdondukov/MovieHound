@@ -9,5 +9,4 @@
     <string name="description">Описание</string>
     <string name="comment">Комментарий</string>
     <string name="hint_message">Введите текст</string>
-    <string name="save">Сохранить</string>
 </resources>
