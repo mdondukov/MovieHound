@@ -28,6 +28,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/cover_0_image_view"
                     style="@style/CoverImageViewStyle"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_4"
@@ -38,6 +39,7 @@
                     android:layout_gravity="top|end">
 
                     <ImageView
+                        android:id="@+id/favorite_0_image_view"
                         style="@style/OverloadIconStyle"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
@@ -77,6 +79,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/cover_1_image_view"
                     style="@style/CoverImageViewStyle"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_5"
@@ -87,6 +90,7 @@
                     android:layout_gravity="top|end">
 
                     <ImageView
+                        android:id="@+id/favorite_1_image_view"
                         style="@style/OverloadIconStyle"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
@@ -100,7 +104,8 @@
                     <TextView
                         android:id="@+id/title_1_text_view"
                         style="@style/TitleTextViewStyle"
-                        android:text="@string/sw_5_title" />
+                        android:text="@string/sw_5_title"
+                        android:textColor="@android:color/white" />
 
                     <Button
                         style="@style/ButtonStyle"
@@ -125,6 +130,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/cover_2_image_view"
                     style="@style/CoverImageViewStyle"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_6"
@@ -135,6 +141,7 @@
                     android:layout_gravity="top|end">
 
                     <ImageView
+                        android:id="@+id/favorite_2_image_view"
                         style="@style/OverloadIconStyle"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
@@ -148,7 +155,8 @@
                     <TextView
                         android:id="@+id/title_2_text_view"
                         style="@style/TitleTextViewStyle"
-                        android:text="@string/sw_6_title" />
+                        android:text="@string/sw_6_title"
+                        android:textColor="@android:color/white" />
 
                     <Button
                         style="@style/ButtonStyle"

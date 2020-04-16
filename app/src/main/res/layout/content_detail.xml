@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/cover_image_view"
                     style="@style/CoverImageViewStyle"
                     android:layout_height="@dimen/cover_detail_height"
                     tools:ignore="ContentDescription"
@@ -39,6 +40,7 @@
                     android:layout_gravity="top|end">
 
                     <ImageView
+                        android:id="@+id/favorite_image_view"
                         style="@style/OverloadIconStyle"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
@@ -52,7 +54,7 @@
 
                     <ImageView
                         style="@style/OverloadIconStyle"
-                        android:onClick="onShareClick"
+                        android:onClick="onInvitationClick"
                         android:src="@drawable/ic_share_white"
                         tools:ignore="ContentDescription" />
 
@@ -91,16 +93,16 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"
                 android:textSize="@dimen/content_text_size"
-                tools:text="@string/desc" />
+                tools:text="@string/sw_4_desc" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/comment_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_md"
                 app:hintTextAppearance="@style/CommentHintTextStyle">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/comment_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semi_bold"
