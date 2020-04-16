@@ -11,7 +11,7 @@ object Storage {
                 R.string.sw_4_title,
                 R.string.sw_4_desc,
                 false,
-                "Hello World!"
+                ""
             )
         )
         movies.add(
