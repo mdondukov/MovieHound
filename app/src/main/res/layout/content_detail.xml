@@ -13,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="@dimen/padding_sm"
         android:paddingTop="@dimen/padding_xs"
-        android:paddingEnd="@dimen/padding_sm"
         android:paddingBottom="@dimen/padding_xs">
 
         <androidx.cardview.widget.CardView
@@ -67,7 +65,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_sm"
             android:layout_marginTop="@dimen/margin_md"
+            android:layout_marginEnd="@dimen/margin_sm"
             android:layout_marginBottom="@dimen/margin_xs"
             android:orientation="vertical">
 
@@ -105,7 +105,7 @@
                     android:id="@+id/comment_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:fontFamily="@font/montserrat_medium"
                     android:hint="@string/comment"
                     android:textColor="@android:color/darker_gray"
                     android:theme="@style/CommentEditText" />

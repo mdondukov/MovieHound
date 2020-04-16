@@ -92,8 +92,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun onInvitationClick(view: View) {
-        view.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-
         val title = mTitleTextView.text
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
