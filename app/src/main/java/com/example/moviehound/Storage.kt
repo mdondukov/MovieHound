@@ -20,7 +20,7 @@ object Storage {
                 R.drawable.img_sw_5,
                 R.string.sw_5_title,
                 R.string.sw_5_desc,
-                true,
+                false,
                 ""
             )
         )
