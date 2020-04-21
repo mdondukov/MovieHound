@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieHound</string>
+    <string name="app_name" translatable="false">MovieHound</string>
     <string name="sw_4_title">Звездные Войны Эпизод IV: Новая Надежда</string>
     <string name="sw_5_title">Звездные Войны Эпизод V: Империя наносит ответный удар</string>
     <string name="sw_6_title">Звездные Войны Эпизод VI: Возвращение Джедая</string>

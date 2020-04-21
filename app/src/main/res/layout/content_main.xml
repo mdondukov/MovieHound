@@ -16,7 +16,7 @@
         android:paddingBottom="@dimen/padding_sm">
 
         <androidx.cardview.widget.CardView
-            style="@style/CardViewStyle"
+            style="@style/Widget.MovieHound.CardView.Rounded"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="@dimen/card_elevation">
 
@@ -26,18 +26,18 @@
 
                 <ImageView
                     android:id="@+id/cover_0_image_view"
-                    style="@style/CoverImageViewStyle"
+                    style="@style/Widget.MovieHound.ImageView"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_4"
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
-                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    style="@style/Widget.MovieHound.LinearLayout.Blackout"
                     android:layout_gravity="top|end">
 
                     <ImageView
                         android:id="@+id/favorite_0_image_view"
-                        style="@style/OverloadIconStyle"
+                        style="@style/Widget.MovieHound.Icon"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
                         android:tag="0"
@@ -45,16 +45,16 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/CardOverlayContentLinearLayoutStyle">
+                <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
 
                     <TextView
                         android:id="@+id/title_0_text_view"
-                        style="@style/TitleTextViewStyle"
+                        style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_4_title"
                         android:textColor="@android:color/white" />
 
                     <Button
-                        style="@style/ButtonStyle"
+                        style="@style/Widget.MovieHound.Button"
                         android:onClick="onDetailClick"
                         android:tag="0"
                         android:text="@string/details" />
@@ -66,7 +66,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            style="@style/CardViewStyle"
+            style="@style/Widget.MovieHound.CardView.Rounded"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="@dimen/card_elevation">
 
@@ -76,18 +76,18 @@
 
                 <ImageView
                     android:id="@+id/cover_1_image_view"
-                    style="@style/CoverImageViewStyle"
+                    style="@style/Widget.MovieHound.ImageView"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_5"
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
-                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    style="@style/Widget.MovieHound.LinearLayout.Blackout"
                     android:layout_gravity="top|end">
 
                     <ImageView
                         android:id="@+id/favorite_1_image_view"
-                        style="@style/OverloadIconStyle"
+                        style="@style/Widget.MovieHound.Icon"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
                         android:tag="1"
@@ -95,16 +95,16 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/CardOverlayContentLinearLayoutStyle">
+                <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
 
                     <TextView
                         android:id="@+id/title_1_text_view"
-                        style="@style/TitleTextViewStyle"
+                        style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_5_title"
                         android:textColor="@android:color/white" />
 
                     <Button
-                        style="@style/ButtonStyle"
+                        style="@style/Widget.MovieHound.Button"
                         android:onClick="onDetailClick"
                         android:tag="1"
                         android:text="@string/details" />
@@ -116,7 +116,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            style="@style/CardViewStyle"
+            style="@style/Widget.MovieHound.CardView.Rounded"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="@dimen/card_elevation">
 
@@ -126,18 +126,18 @@
 
                 <ImageView
                     android:id="@+id/cover_2_image_view"
-                    style="@style/CoverImageViewStyle"
+                    style="@style/Widget.MovieHound.ImageView"
                     android:layout_height="@dimen/cover_main_height"
                     android:src="@drawable/img_sw_6"
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
-                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    style="@style/Widget.MovieHound.LinearLayout.Blackout"
                     android:layout_gravity="top|end">
 
                     <ImageView
                         android:id="@+id/favorite_2_image_view"
-                        style="@style/OverloadIconStyle"
+                        style="@style/Widget.MovieHound.Icon"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
                         android:tag="2"
@@ -145,16 +145,16 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/CardOverlayContentLinearLayoutStyle">
+                <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
 
                     <TextView
                         android:id="@+id/title_2_text_view"
-                        style="@style/TitleTextViewStyle"
+                        style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_6_title"
                         android:textColor="@android:color/white" />
 
                     <Button
-                        style="@style/ButtonStyle"
+                        style="@style/Widget.MovieHound.Button"
                         android:onClick="onDetailClick"
                         android:tag="2"
                         android:text="@string/details" />
