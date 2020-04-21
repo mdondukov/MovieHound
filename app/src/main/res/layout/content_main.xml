@@ -51,7 +51,7 @@
                         android:id="@+id/title_0_text_view"
                         style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_4_title"
-                        android:textColor="@android:color/white" />
+                        android:textColor="?android:attr/textColorPrimaryInverse" />
 
                     <Button
                         style="@style/Widget.MovieHound.Button"
@@ -101,7 +101,7 @@
                         android:id="@+id/title_1_text_view"
                         style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_5_title"
-                        android:textColor="@android:color/white" />
+                        android:textColor="?android:attr/textColorPrimaryInverse" />
 
                     <Button
                         style="@style/Widget.MovieHound.Button"
@@ -151,7 +151,7 @@
                         android:id="@+id/title_2_text_view"
                         style="@style/Widget.MovieHound.TextView.Title"
                         android:text="@string/sw_6_title"
-                        android:textColor="@android:color/white" />
+                        android:textColor="?android:attr/textColorPrimaryInverse" />
 
                     <Button
                         style="@style/Widget.MovieHound.Button"

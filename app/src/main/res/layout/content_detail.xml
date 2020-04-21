@@ -74,7 +74,7 @@
             <TextView
                 android:id="@+id/title_text_view"
                 style="@style/Widget.MovieHound.TextView.Title"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 tools:text="@string/sw_4_title" />
 
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_marginBottom="@dimen/margin_xs"
                 android:fontFamily="@font/montserrat_semi_bold"
                 android:text="@string/description"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/content_text_size" />
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_md"
-                app:hintTextAppearance="@style/Widget.MovieHound.HintText">
+                app:hintTextAppearance="@style/TextAppearance.MovieHound.HintText">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/comment_edit_text"
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="@string/comment"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:theme="@style/Widget.MovieHound.EditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
