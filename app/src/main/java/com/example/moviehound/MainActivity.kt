@@ -2,21 +2,23 @@ package com.example.moviehound
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var mSettings: SharedPreferences
     private lateinit var mMovieList: ArrayList<Movie>
     private lateinit var mTitle0TextView: TextView
     private lateinit var mTitle1TextView: TextView
@@ -27,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        Utils.onActivityCreateSetTheme(this, mSettings)
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -68,6 +72,45 @@ class MainActivity : AppCompatActivity() {
         mFavorite0ImageView.isSelected = mMovieList[0].mIsFavorite
         mFavorite1ImageView.isSelected = mMovieList[1].mIsFavorite
         mFavorite2ImageView.isSelected = mMovieList[2].mIsFavorite
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                switchTheme()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun switchTheme() {
+        if (mSettings.contains(APP_CURRENT_THEME)) {
+            when (mSettings.getInt(APP_CURRENT_THEME, 0)) {
+                Utils.THEME_PRO -> {
+                    Utils.changeToTheme(this, Utils.THEME_DEFAULT)
+                    saveCurrentTheme(Utils.THEME_DEFAULT)
+                }
+                Utils.THEME_DEFAULT -> {
+                    Utils.changeToTheme(this, Utils.THEME_PRO)
+                    saveCurrentTheme(Utils.THEME_PRO)
+                }
+            }
+        } else {
+            Utils.changeToTheme(this, Utils.THEME_PRO)
+            saveCurrentTheme(Utils.THEME_PRO)
+        }
+    }
+
+    private fun saveCurrentTheme(theme: Int) {
+        val editor: SharedPreferences.Editor = mSettings.edit()
+        editor.putInt(APP_CURRENT_THEME, theme)
+        editor.apply()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -168,5 +211,7 @@ class MainActivity : AppCompatActivity() {
         val TAG = MainActivity::class.java.simpleName
         const val MOVIE_LIST = "movies"
         const val REQUEST_CODE_FOR_EDIT = 1
+        const val APP_PREFERENCES = "settings"
+        const val APP_CURRENT_THEME = "current_theme"
     }
 }
