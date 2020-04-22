@@ -1,12 +1,13 @@
 package com.example.moviehound
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
@@ -17,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mMovieList: ArrayList<Movie>
-
     private lateinit var mTitle0TextView: TextView
     private lateinit var mTitle1TextView: TextView
     private lateinit var mTitle2TextView: TextView
@@ -123,7 +123,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == REQUEST_CODE_FOR_EDIT && resultCode == Activity.RESULT_OK) {
             updateMovieList(data?.getParcelableExtra(Movie::class.java.simpleName))
         }
@@ -150,6 +149,19 @@ class MainActivity : AppCompatActivity() {
     private fun switchFavoriteStatus(view: View, movie: Movie) {
         view.isSelected = !view.isSelected
         movie.mIsFavorite = !movie.mIsFavorite
+    }
+
+    override fun onBackPressed() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_exit)
+        dialog.window?.setBackgroundDrawable(this.getDrawable(R.drawable.dialog_rounded_background))
+        dialog.findViewById<Button>(R.id.exit_positive_button).setOnClickListener {
+            super.onBackPressed()
+        }
+        dialog.findViewById<Button>(R.id.exit_negative_button).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     companion object {

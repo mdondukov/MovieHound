@@ -12,4 +12,8 @@
     <string name="comment">Комментарий</string>
     <string name="hint_message">Введите текст</string>
     <string name="invitation">Мне нравится фильм \"%1$s\". Приглашаю посмотреть его вместе!</string>
+    <string name="exit_dialog_text">Пожалуйста, подтвердите выход из приложения.</string>
+    <string name="exit_dialog_title">Уже уходите?</string>
+    <string name="exit_positive">Да, выйти</string>
+    <string name="exit_negative">Отмена</string>
 </resources>

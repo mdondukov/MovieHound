@@ -66,6 +66,25 @@
         <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
     </style>
 
+    <style name="Widget.MovieHound.Button.Exit" parent="">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="Widget.MovieHound.Button.Exit.Outline" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
     <style name="TextAppearance.MovieHound.HintText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
