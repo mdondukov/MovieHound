@@ -17,7 +17,9 @@
         android:paddingBottom="@dimen/padding_xs">
 
         <androidx.cardview.widget.CardView
-            style="@style/Widget.MovieHound.CardView.Rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_sm"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="@dimen/card_elevation">
 

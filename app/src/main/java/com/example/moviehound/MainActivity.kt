@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -33,6 +35,13 @@ class MainActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v: View, insets: WindowInsetsCompat ->
             val params = v.layoutParams as MarginLayoutParams
             params.topMargin = insets.systemWindowInsetTop
+            insets
+        }
+
+        val mainLayout: ScrollView = findViewById(R.id.main_layout)
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout) { v: View, insets: WindowInsetsCompat ->
+            val params = v.layoutParams as MarginLayoutParams
+            params.rightMargin = insets.systemWindowInsetRight
             insets
         }
 

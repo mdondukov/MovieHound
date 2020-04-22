@@ -19,12 +19,6 @@
 
     <style name="Widget.MovieHound.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Widget.MovieHound.CardView.Rounded" parent="">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/margin_sm</item>
-    </style>
-
     <style name="Widget.MovieHound.ImageView" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:scaleType">centerCrop</item>
