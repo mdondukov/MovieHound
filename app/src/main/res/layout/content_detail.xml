@@ -17,7 +17,9 @@
         android:paddingBottom="@dimen/padding_xs">
 
         <androidx.cardview.widget.CardView
-            style="@style/CardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_sm"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="@dimen/card_elevation">
 
@@ -28,18 +30,18 @@
 
                 <ImageView
                     android:id="@+id/cover_image_view"
-                    style="@style/CoverImageViewStyle"
+                    style="@style/Widget.MovieHound.ImageView"
                     android:layout_height="@dimen/cover_detail_height"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/img_sw_4" />
 
                 <LinearLayout
-                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    style="@style/Widget.MovieHound.LinearLayout.Blackout"
                     android:layout_gravity="top|end">
 
                     <ImageView
                         android:id="@+id/favorite_image_view"
-                        style="@style/OverloadIconStyle"
+                        style="@style/Widget.MovieHound.Icon"
                         android:onClick="onFavoriteClick"
                         android:src="@drawable/ic_favorite_check"
                         tools:ignore="ContentDescription" />
@@ -47,11 +49,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/CardOverlayButtonsLinearLayoutStyle"
+                    style="@style/Widget.MovieHound.LinearLayout.Blackout"
                     android:layout_gravity="bottom|start">
 
                     <ImageView
-                        style="@style/OverloadIconStyle"
+                        style="@style/Widget.MovieHound.Icon"
                         android:onClick="onInvitationClick"
                         android:src="@drawable/ic_share_white"
                         tools:ignore="ContentDescription" />
@@ -73,8 +75,8 @@
 
             <TextView
                 android:id="@+id/title_text_view"
-                style="@style/TitleTextViewStyle"
-                android:textColor="@android:color/black"
+                style="@style/Widget.MovieHound.TextView.Title"
+                android:textColor="?android:attr/textColorPrimary"
                 tools:text="@string/sw_4_title" />
 
             <TextView
@@ -84,7 +86,7 @@
                 android:layout_marginBottom="@dimen/margin_xs"
                 android:fontFamily="@font/montserrat_semi_bold"
                 android:text="@string/description"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/content_text_size" />
 
             <TextView
@@ -99,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_md"
-                app:hintTextAppearance="@style/CommentHintTextStyle">
+                app:hintTextAppearance="@style/TextAppearance.MovieHound.HintText">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/comment_edit_text"
@@ -107,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="@string/comment"
-                    android:textColor="@android:color/darker_gray"
-                    android:theme="@style/CommentEditText" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:theme="@style/Widget.MovieHound.EditText" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

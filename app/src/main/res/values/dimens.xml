@@ -6,7 +6,7 @@
     <dimen name="margin_xs">8dp</dimen>
     <dimen name="margin_xxs">4dp</dimen>
     <dimen name="card_radius">32dp</dimen>
-    <dimen name="card_elevation">12dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
     <dimen name="cover_main_height">500dp</dimen>
     <dimen name="padding_md">24dp</dimen>
     <dimen name="padding_lg">32dp</dimen>

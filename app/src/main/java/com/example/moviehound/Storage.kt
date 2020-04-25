@@ -11,7 +11,7 @@ object Storage {
                 R.string.sw_4_title,
                 R.string.sw_4_desc,
                 false,
-                "Hello World!"
+                ""
             )
         )
         movies.add(
@@ -20,7 +20,7 @@ object Storage {
                 R.drawable.img_sw_5,
                 R.string.sw_5_title,
                 R.string.sw_5_desc,
-                true,
+                false,
                 ""
             )
         )

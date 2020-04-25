@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieHound</string>
+    <string name="details">Details</string>
+    <string name="share">Invite a friend</string>
+    <string name="description">Description</string>
+    <string name="comment">Comment</string>
+    <string name="hint_message">Enter the text</string>
+    <string name="invitation">I like the movie \"%1$s\". I invite you to watch it together!</string>
+    <string name="sw_4_title">Star Wars Episode IV: A New Hope</string>
+    <string name="sw_5_title">Star Wars Episode V: The Empire Strikes Back</string>
+    <string name="sw_6_title">Star Wars Episode VI: Return of the Jedi</string>
+    <string name="sw_4_desc">It\'s been a difficult time for a galaxy far away. The world is ruled by a tyrannical empire. There are almost no pure hearts left, endowed with the power of Jedi, who fight evil and injustice. And yet there are those who dare to resist the universal dictatorship and cruelty: the rebels are few, but they are strong in spirit, strong in hope.</string>
+    <string name="sw_5_desc">The mysterious planet Dagobar is home to the young lightsaber knight Luke Skywalker for a while. Wise Master Yoda trains the young Jedi, giving the student some of his own extensive knowledge and skills. But it is impossible for Luke to stay in the beautiful jungle: his friends are again captured by the vengeful Sith Darth Vader.</string>
+    <string name="sw_6_desc">The monstrous smuggler Jabba Hutt has captured Khan Solo. To help his friend rush to the aid of matured Luke Skywalker, the brave Princess Leia, faithful droids and other loyal supporters of the Resistance. Meanwhile, treacherous Darth Vader hurries to create a second, more powerful \"Death Star\" to destroy the rebels and their comrades-in-arms across the galaxy once and for all.</string>
+    <string name="exit_dialog_text">Please confirm exit from the application.</string>
+    <string name="exit_dialog_title">Leaving already?</string>
+    <string name="exit_positive">Yes</string>
+    <string name="exit_negative">Cancel</string>
+    <string name="action_settings">Settings</string>
+</resources>

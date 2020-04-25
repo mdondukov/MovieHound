@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.MovieHound" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,27 +10,29 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="Theme.MovieHound.Pro">
+        <item name="colorPrimary">@color/colorPrimaryPro</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPro</item>
+        <item name="colorAccent">@color/colorAccentPro</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="Theme.MovieHound.NoActionBar" parent="">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Widget.MovieHound.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Widget.MovieHound.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="CardViewStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/margin_sm</item>
-    </style>
-
-    <style name="CoverImageViewStyle">
+    <style name="Widget.MovieHound.ImageView" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="CardOverlayButtonsLinearLayoutStyle">
+    <style name="Widget.MovieHound.LinearLayout.Blackout" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
@@ -38,12 +40,12 @@
         <item name="android:background">@drawable/overlay_buttons_background</item>
     </style>
 
-    <style name="OverloadIconStyle">
+    <style name="Widget.MovieHound.Icon" parent="">
         <item name="android:layout_width">@dimen/ic_size</item>
         <item name="android:layout_height">@dimen/ic_size</item>
     </style>
 
-    <style name="CardOverlayContentLinearLayoutStyle">
+    <style name="Widget.MovieHound.LinearLayout.Gradient" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
@@ -55,40 +57,51 @@
         <item name="android:background">@drawable/gradient_background</item>
     </style>
 
-    <style name="TitleTextViewStyle">
+    <style name="Widget.MovieHound.TextView.Title" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textSize">@dimen/title_text_size</item>
     </style>
 
-    <style name="SubtitleTextViewStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/montserrat_medium</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/subtitle_text_size</item>
-    </style>
-
-    <style name="ButtonStyle">
+    <style name="Widget.MovieHound.Button" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/margin_md</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@drawable/button_background</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
     </style>
 
-    <style name="CommentHintTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColor">@android:color/black</item>
+    <style name="Widget.MovieHound.Button.Exit" parent="">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="Widget.MovieHound.Button.Exit.Outline" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.MovieHound.HintText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textSize">@dimen/content_text_size</item>
     </style>
 
-    <style name="CommentEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="colorControlNormal">@android:color/black</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+    <style name="Widget.MovieHound.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
+        <item name="colorControlActivated">?attr/colorPrimary</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textSize">@dimen/content_text_size</item>
     </style>

@@ -1,7 +1,9 @@
 package com.example.moviehound
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class DetailActivity : AppCompatActivity() {
+    private lateinit var mSettings: SharedPreferences
     private lateinit var mMovie: Movie
     private lateinit var mCoverImageView: ImageView
     private lateinit var mTitleTextView: TextView
@@ -24,6 +27,8 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var mCommentEditText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mSettings = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        Utils.onActivityCreateSetTheme(this, mSettings)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
