@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/card_elevation">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cover_image_view"
+                style="@style/Widget.MovieHound.ImageView"
+                android:layout_height="@dimen/cover_main_height"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/img_sw_4" />
+
+            <LinearLayout
+                style="@style/Widget.MovieHound.LinearLayout.Blackout"
+                android:layout_gravity="top|end">
+
+                <ImageView
+                    android:id="@+id/favorite_image_view"
+                    style="@style/Widget.MovieHound.Icon"
+                    android:onClick="onFavoriteClick"
+                    android:src="@drawable/ic_favorite_check"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
+
+                <TextView
+                    android:id="@+id/title_text_view"
+                    style="@style/Widget.MovieHound.TextView.Title"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    tools:text="@string/sw_4_title" />
+
+                <Button
+                    android:id="@+id/detail_button"
+                    style="@style/Widget.MovieHound.Button"
+                    android:text="@string/details" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

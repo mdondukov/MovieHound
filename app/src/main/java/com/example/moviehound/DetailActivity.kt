@@ -15,7 +15,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
-import java.util.*
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var mSettings: SharedPreferences
@@ -68,9 +67,9 @@ class DetailActivity : AppCompatActivity() {
             mMovie = it.getParcelableExtra(Movie::class.java.simpleName)
         }
 
-        mCoverImageView.setImageDrawable(resources.getDrawable(mMovie.mCoverResId))
-        mTitleTextView.text = resources.getString(mMovie.mTitleResId)
-        mDescTextView.text = resources.getString(mMovie.mDescResId)
+        mCoverImageView.setImageResource(mMovie.mCoverResId)
+        mTitleTextView.text = mMovie.mTitle
+        mDescTextView.text = mMovie.mDesc
         mFavoriteImageView.isSelected = mMovie.mIsFavorite
         mCommentEditText.setText(mMovie.mComment)
     }
