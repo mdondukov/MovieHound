@@ -10,5 +10,6 @@
     <string name="exit_dialog_title">Leaving already?</string>
     <string name="exit_positive">Yes</string>
     <string name="exit_negative">Cancel</string>
-    <string name="action_settings">Settings</string>
+    <string name="settings">Change theme</string>
+    <string name="favorite">Favorites</string>
 </resources>

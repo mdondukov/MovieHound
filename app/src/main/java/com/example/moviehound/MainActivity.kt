@@ -17,14 +17,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mSettings: SharedPreferences
     private lateinit var mMovieList: ArrayList<Movie>
+    private lateinit var mFavoriteList: ArrayList<Movie>
     private lateinit var mAdapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private fun initData() {
         mMovieList = ArrayList()
         mMovieList = Storage.init()
+        mFavoriteList = ArrayList()
     }
 
     private fun initViews() {
@@ -52,12 +52,14 @@ class MainActivity : AppCompatActivity() {
         val gridColumnCount: Int = resources.getInteger(R.integer.grid_column_count)
         val layoutManager = GridLayoutManager(this, gridColumnCount)
         recycler.layoutManager = layoutManager
+
         mAdapter = MovieAdapter(
             LayoutInflater.from(this),
-            mMovieList
+            mMovieList,
+            mFavoriteList
         ) { item -> startDetailActivity(item) }
-        recycler.adapter = mAdapter
 
+        recycler.adapter = mAdapter
         recycler.addItemDecoration(
             MovieItemDecoration(
                 resources.getDimension(R.dimen.margin_sm).toInt()
@@ -68,33 +70,49 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(MOVIE_LIST, mAdapter.getItems())
+        outState.putParcelableArrayList(FAVORITE_LIST, mFavoriteList)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val movies: ArrayList<Movie> = savedInstanceState.getParcelableArrayList(MOVIE_LIST)!!
-        mAdapter.resetItems(movies)
+        mFavoriteList = savedInstanceState.getParcelableArrayList(FAVORITE_LIST)!!
+        mAdapter.resetItems(movies, mFavoriteList)
     }
 
     private fun startDetailActivity(movie: Movie) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(Movie::class.java.simpleName, movie)
-        startActivityForResult(intent, REQUEST_CODE_FOR_EDIT)
+        intent.putParcelableArrayListExtra(FAVORITE_LIST, mFavoriteList)
+        startActivityForResult(intent, REQUEST_CODE_FOR_MOVIE_EDIT)
+    }
+
+    private fun startFavoriteActivity() {
+        val intent = Intent(this, FavoriteActivity::class.java)
+        intent.putParcelableArrayListExtra(FAVORITE_LIST, mFavoriteList)
+        intent.putParcelableArrayListExtra(MOVIE_LIST, mMovieList)
+        startActivityForResult(intent, REQUEST_CODE_FOR_FAVORITES_EDIT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_FOR_EDIT && resultCode == Activity.RESULT_OK) {
-            updateMovieList(data?.getParcelableExtra(Movie::class.java.simpleName))
+        if (requestCode == REQUEST_CODE_FOR_MOVIE_EDIT && resultCode == Activity.RESULT_OK) {
+            val movie: Movie? = data?.getParcelableExtra(Movie::class.java.simpleName)
+            val favorites: ArrayList<Movie>? = data?.getParcelableArrayListExtra(FAVORITE_LIST)
+            updateAllLists(movie, favorites)
+
+        } else if (requestCode == REQUEST_CODE_FOR_FAVORITES_EDIT && resultCode == Activity.RESULT_OK) {
+            mFavoriteList = data?.getParcelableArrayListExtra(FAVORITE_LIST)!!
+            mMovieList = data?.getParcelableArrayListExtra(MOVIE_LIST)!!
+            mAdapter.resetItems(mMovieList, mFavoriteList)
         }
     }
 
-    private fun updateMovieList(movie: Movie?) {
+    private fun updateAllLists(movie: Movie?, favorites: ArrayList<Movie>?) {
+        favorites?.let { mFavoriteList = favorites }
         val index: Int = mMovieList.indexOf(movie)
         movie?.let { mMovieList.set(index, it) }
-        mAdapter.resetItems(mMovieList)
-
-        Log.d(TAG, "Favorite: ${movie?.mIsFavorite}. Comment: ${movie?.mComment}")
+        mAdapter.resetItems(mMovieList, mFavoriteList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -106,6 +124,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 switchTheme()
+                true
+            }
+            R.id.action_favorites -> {
+                startFavoriteActivity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -166,9 +188,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TAG = MainActivity::class.java.simpleName
         const val MOVIE_LIST = "movies"
-        const val REQUEST_CODE_FOR_EDIT = 1
+        const val FAVORITE_LIST = "favorites"
+        const val REQUEST_CODE_FOR_MOVIE_EDIT = 1
+        const val REQUEST_CODE_FOR_FAVORITES_EDIT = 2
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
     }

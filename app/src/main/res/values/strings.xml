@@ -12,5 +12,6 @@
     <string name="exit_dialog_title">Уже уходите?</string>
     <string name="exit_positive">Да, выйти</string>
     <string name="exit_negative">Отмена</string>
-    <string name="action_settings">Настройки</string>
+    <string name="settings">Сменить тему</string>
+    <string name="favorite">Избранное</string>
 </resources>

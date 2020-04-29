@@ -9,7 +9,6 @@ data class Movie(
     val mCoverResId: Int,
     val mTitle: String,
     val mDesc: String,
-    var mIsFavorite: Boolean,
     var mComment: String
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
