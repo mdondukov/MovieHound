@@ -102,8 +102,10 @@ class MainActivity : AppCompatActivity() {
             updateAllLists(movie, favorites)
 
         } else if (requestCode == REQUEST_CODE_FOR_FAVORITES_EDIT && resultCode == Activity.RESULT_OK) {
-            mFavoriteList = data?.getParcelableArrayListExtra(FAVORITE_LIST)!!
-            mMovieList = data?.getParcelableArrayListExtra(MOVIE_LIST)!!
+            data?.let {
+                mFavoriteList = it.getParcelableArrayListExtra(FAVORITE_LIST)!!
+                mMovieList = it.getParcelableArrayListExtra(MOVIE_LIST)!!
+            }
             mAdapter.resetItems(mMovieList, mFavoriteList)
         }
     }

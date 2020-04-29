@@ -52,8 +52,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setData() {
         intent?.let {
-            mMovie = it.getParcelableExtra(Movie::class.java.simpleName)
-            mFavoriteList = it.getParcelableArrayListExtra(MainActivity.FAVORITE_LIST)
+            mMovie = it.getParcelableExtra(Movie::class.java.simpleName)!!
+            mFavoriteList = it.getParcelableArrayListExtra(MainActivity.FAVORITE_LIST)!!
         }
 
         mCoverImageView.setImageResource(mMovie.mCoverResId)
