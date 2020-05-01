@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 
 
-object Utils {
+object ThemeChanger {
     private var sCurrentTheme = 0
     const val THEME_DEFAULT = 0
     const val THEME_PRO = 1

@@ -1,4 +1,4 @@
-package com.example.moviehound
+package com.example.moviehound.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

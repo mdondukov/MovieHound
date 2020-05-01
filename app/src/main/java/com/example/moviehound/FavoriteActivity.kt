@@ -15,6 +15,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.adapters.FavoriteAdapter
+import com.example.moviehound.ui.itemdecorations.MovieItemDecoration
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var mSettings: SharedPreferences
@@ -24,7 +27,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mSettings = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
-        Utils.onActivityCreateSetTheme(this, mSettings)
+        ThemeChanger.onActivityCreateSetTheme(this, mSettings)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
         initData()
@@ -91,7 +94,8 @@ class FavoriteActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MainActivity.REQUEST_CODE_FOR_MOVIE_EDIT && resultCode == Activity.RESULT_OK) {
-            val movie: Movie? = data?.getParcelableExtra(Movie::class.java.simpleName)
+            val movie: Movie? = data?.getParcelableExtra(
+                Movie::class.java.simpleName)
             val favorites: ArrayList<Movie>? = data?.getParcelableArrayListExtra(MainActivity.FAVORITE_LIST)
             updateAllLists(movie, favorites)
         }

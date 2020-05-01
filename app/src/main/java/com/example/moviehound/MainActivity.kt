@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +18,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviehound.data.Movie
+import com.example.moviehound.data.Storage
+import com.example.moviehound.ui.adapters.MovieAdapter
+import com.example.moviehound.ui.itemdecorations.MovieItemDecoration
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mSettings: SharedPreferences
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        Utils.onActivityCreateSetTheme(this, mSettings)
+        ThemeChanger.onActivityCreateSetTheme(this, mSettings)
         setContentView(R.layout.activity_main)
         initData()
         initViews()
@@ -97,7 +100,8 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_FOR_MOVIE_EDIT && resultCode == Activity.RESULT_OK) {
-            val movie: Movie? = data?.getParcelableExtra(Movie::class.java.simpleName)
+            val movie: Movie? = data?.getParcelableExtra(
+                Movie::class.java.simpleName)
             val favorites: ArrayList<Movie>? = data?.getParcelableArrayListExtra(FAVORITE_LIST)
             updateAllLists(movie, favorites)
 
@@ -139,18 +143,18 @@ class MainActivity : AppCompatActivity() {
     private fun switchTheme() {
         if (mSettings.contains(APP_CURRENT_THEME)) {
             when (mSettings.getInt(APP_CURRENT_THEME, 0)) {
-                Utils.THEME_PRO -> {
-                    Utils.changeToTheme(this, Utils.THEME_DEFAULT)
-                    saveCurrentTheme(Utils.THEME_DEFAULT)
+                ThemeChanger.THEME_PRO -> {
+                    ThemeChanger.changeToTheme(this, ThemeChanger.THEME_DEFAULT)
+                    saveCurrentTheme(ThemeChanger.THEME_DEFAULT)
                 }
-                Utils.THEME_DEFAULT -> {
-                    Utils.changeToTheme(this, Utils.THEME_PRO)
-                    saveCurrentTheme(Utils.THEME_PRO)
+                ThemeChanger.THEME_DEFAULT -> {
+                    ThemeChanger.changeToTheme(this, ThemeChanger.THEME_PRO)
+                    saveCurrentTheme(ThemeChanger.THEME_PRO)
                 }
             }
         } else {
-            Utils.changeToTheme(this, Utils.THEME_PRO)
-            saveCurrentTheme(Utils.THEME_PRO)
+            ThemeChanger.changeToTheme(this, ThemeChanger.THEME_PRO)
+            saveCurrentTheme(ThemeChanger.THEME_PRO)
         }
     }
 

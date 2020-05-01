@@ -1,4 +1,6 @@
-package com.example.moviehound
+package com.example.moviehound.data
+
+import com.example.moviehound.R
 
 object Storage {
     fun init(): ArrayList<Movie> {

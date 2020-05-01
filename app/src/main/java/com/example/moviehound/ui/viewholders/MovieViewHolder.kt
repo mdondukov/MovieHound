@@ -1,9 +1,11 @@
-package com.example.moviehound
+package com.example.moviehound.ui.viewholders
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviehound.R
+import com.example.moviehound.data.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val mCoverImageView: ImageView = itemView.findViewById(R.id.cover_image_view)

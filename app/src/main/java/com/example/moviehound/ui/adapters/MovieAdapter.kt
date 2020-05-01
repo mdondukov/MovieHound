@@ -1,4 +1,4 @@
-package com.example.moviehound
+package com.example.moviehound.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviehound.ui.viewholders.MovieViewHolder
+import com.example.moviehound.R
+import com.example.moviehound.data.Movie
 
 class MovieAdapter(
     private val mInflater: LayoutInflater,
@@ -14,7 +17,13 @@ class MovieAdapter(
     private val mListener: (movie: Movie) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return MovieViewHolder(mInflater.inflate(R.layout.item_movie, parent, false))
+        return MovieViewHolder(
+            mInflater.inflate(
+                R.layout.item_movie,
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount() = mMovieList.size

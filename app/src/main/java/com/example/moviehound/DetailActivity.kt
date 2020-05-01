@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.moviehound.data.Movie
 import com.google.android.material.textfield.TextInputEditText
 
 class DetailActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mSettings = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
-        Utils.onActivityCreateSetTheme(this, mSettings)
+        ThemeChanger.onActivityCreateSetTheme(this, mSettings)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initViews()
