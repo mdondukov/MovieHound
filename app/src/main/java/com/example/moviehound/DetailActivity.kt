@@ -14,12 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.moviehound.data.Movie
 import com.google.android.material.textfield.TextInputEditText
-import java.util.*
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var mSettings: SharedPreferences
     private lateinit var mMovie: Movie
+    private lateinit var mFavoriteList: ArrayList<Movie>
     private lateinit var mCoverImageView: ImageView
     private lateinit var mTitleTextView: TextView
     private lateinit var mDescTextView: TextView
@@ -28,34 +29,21 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mSettings = getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
-        Utils.onActivityCreateSetTheme(this, mSettings)
+        ThemeChanger.onActivityCreateSetTheme(this, mSettings)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v: View, insets: WindowInsetsCompat ->
-            val params = v.layoutParams as ViewGroup.MarginLayoutParams
-            params.topMargin = insets.systemWindowInsetTop
-            insets
-        }
-
-        val mainLayout: ScrollView = findViewById(R.id.main_layout)
-        ViewCompat.setOnApplyWindowInsetsListener(mainLayout) { v: View, insets: WindowInsetsCompat ->
-            val params = v.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = insets.systemWindowInsetBottom
-            insets
-        }
-
         initViews()
         setData()
     }
 
     private fun initViews() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        val mainLayout: ScrollView = findViewById(R.id.main_layout)
+        setInsets(toolbar)
+        setInsets(mainLayout)
         mCoverImageView = findViewById(R.id.cover_image_view)
         mTitleTextView = findViewById(R.id.title_text_view)
         mDescTextView = findViewById(R.id.desc_text_view)
@@ -65,35 +53,55 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setData() {
         intent?.let {
-            mMovie = it.getParcelableExtra(Movie::class.java.simpleName)
+            mMovie = it.getParcelableExtra(Movie::class.java.simpleName)!!
+            mFavoriteList = it.getParcelableArrayListExtra(MainActivity.FAVORITE_LIST)!!
         }
 
-        mCoverImageView.setImageDrawable(resources.getDrawable(mMovie.mCoverResId))
-        mTitleTextView.text = resources.getString(mMovie.mTitleResId)
-        mDescTextView.text = resources.getString(mMovie.mDescResId)
-        mFavoriteImageView.isSelected = mMovie.mIsFavorite
+        mCoverImageView.setImageResource(mMovie.mCoverResId)
+        mTitleTextView.text = mMovie.mTitle
+        mDescTextView.text = mMovie.mDesc
         mCommentEditText.setText(mMovie.mComment)
+
+        if (mFavoriteList.size != 0) {
+            val itemExists: Boolean = checkAvailability(mFavoriteList, mMovie)
+            if (itemExists) setFavoriteStatus(mFavoriteImageView, true)
+            else setFavoriteStatus(mFavoriteImageView, false)
+
+        } else setFavoriteStatus(mFavoriteImageView, false)
+    }
+
+    private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
+        for (movie: Movie in favorites) {
+            if (movie == item) return true
+        }
+        return false
+    }
+
+    private fun setFavoriteStatus(view: View, status: Boolean) {
+        view.isSelected = status
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         saveComment()
         outState.putParcelable(Movie::class.java.simpleName, mMovie)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return super.onSupportNavigateUp()
+        outState.putParcelableArrayList(MainActivity.FAVORITE_LIST, mFavoriteList)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         mMovie = savedInstanceState.getParcelable(Movie::class.java.simpleName)!!
+        mFavoriteList = savedInstanceState.getParcelableArrayList(MainActivity.FAVORITE_LIST)!!
     }
 
     fun onFavoriteClick(view: View) {
-        view.isSelected = !view.isSelected
-        mMovie.mIsFavorite = !mMovie.mIsFavorite
+        if (view.isSelected) {
+            setFavoriteStatus(view, false)
+            mFavoriteList.remove(mMovie)
+        } else {
+            setFavoriteStatus(view, true)
+            mFavoriteList.add(mMovie)
+        }
     }
 
     fun onInvitationClick(view: View) {
@@ -104,11 +112,32 @@ class DetailActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun setInsets(toolbar: Toolbar) {
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v: View, insets: WindowInsetsCompat ->
+            val params = v.layoutParams as ViewGroup.MarginLayoutParams
+            params.topMargin = insets.systemWindowInsetTop
+            insets
+        }
+    }
+
+    private fun setInsets(mainLayout: ScrollView) {
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout) { v: View, insets: WindowInsetsCompat ->
+            val params = v.layoutParams as ViewGroup.MarginLayoutParams
+            params.bottomMargin = insets.systemWindowInsetBottom
+            insets
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
     override fun onBackPressed() {
         saveComment()
-
         val data = Intent()
         data.putExtra(Movie::class.java.simpleName, mMovie)
+        data.putParcelableArrayListExtra(MainActivity.FAVORITE_LIST, mFavoriteList)
         setResult(Activity.RESULT_OK, data)
         super.onBackPressed()
     }

@@ -1,4 +1,4 @@
-package com.example.moviehound
+package com.example.moviehound.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -7,9 +7,8 @@ import kotlinx.android.parcel.Parcelize
 data class Movie(
     val mId: Int,
     val mCoverResId: Int,
-    val mTitleResId: Int,
-    val mDescResId: Int,
-    var mIsFavorite: Boolean,
+    val mTitle: String,
+    val mDesc: String,
     var mComment: String
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
