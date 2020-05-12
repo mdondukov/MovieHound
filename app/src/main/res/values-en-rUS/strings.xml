@@ -12,4 +12,5 @@
     <string name="exit_negative">Cancel</string>
     <string name="settings">Change theme</string>
     <string name="favorite">Favorites</string>
+    <string name="home">Home</string>
 </resources>
