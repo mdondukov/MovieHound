@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviehound.ui.viewholders.MovieViewHolder
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.viewholders.MovieViewHolder
 
 class FavoriteAdapter(
     private val mInflater: LayoutInflater,
@@ -45,14 +45,5 @@ class FavoriteAdapter(
             holder.itemView.findViewById<Button>(R.id.detail_button)
                 .setOnClickListener { mListener(item) }
         }
-    }
-
-    fun getItems(): ArrayList<Movie> {
-        return mFavoriteList
-    }
-
-    fun resetItems(items: ArrayList<Movie>) {
-        mFavoriteList = items
-        notifyDataSetChanged()
     }
 }

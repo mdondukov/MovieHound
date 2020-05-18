@@ -68,14 +68,4 @@ class MovieAdapter(
     private fun setFavoriteStatus(view: View, status: Boolean) {
         view.isSelected = status
     }
-
-    fun getItems(): ArrayList<Movie> {
-        return mMovieList
-    }
-
-    fun resetItems(movies: ArrayList<Movie>, favorites: ArrayList<Movie>) {
-        mMovieList = movies
-        mFavoriteList = favorites
-        notifyDataSetChanged()
-    }
 }
