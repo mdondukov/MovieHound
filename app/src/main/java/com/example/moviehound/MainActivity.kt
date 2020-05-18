@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.moviehound.data.Movie
 import com.example.moviehound.data.Storage
+import com.example.moviehound.ui.fragments.DetailFragment
+import com.example.moviehound.ui.fragments.FavoriteFragment
+import com.example.moviehound.ui.fragments.HomeFragment
 import com.example.moviehound.util.ThemeChanger
 import com.example.moviehound.util.doOnApplyWindowInsets
 import com.google.android.material.navigation.NavigationView

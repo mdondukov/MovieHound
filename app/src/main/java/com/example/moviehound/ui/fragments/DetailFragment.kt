@@ -1,4 +1,4 @@
-package com.example.moviehound
+package com.example.moviehound.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.moviehound.MainActivity
+import com.example.moviehound.R
 import com.example.moviehound.data.Movie
 import com.example.moviehound.util.doOnApplyWindowInsets
 import com.google.android.material.textfield.TextInputEditText
