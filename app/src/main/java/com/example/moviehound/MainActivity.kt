@@ -20,6 +20,7 @@ import com.example.moviehound.data.Storage
 import com.example.moviehound.ui.fragments.DetailFragment
 import com.example.moviehound.ui.fragments.FavoriteFragment
 import com.example.moviehound.ui.fragments.HomeFragment
+import com.example.moviehound.ui.fragments.SettingsFragment
 import com.example.moviehound.util.ThemeChanger
 import com.example.moviehound.util.doOnApplyWindowInsets
 import com.google.android.material.navigation.NavigationView
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var mToolbar: Toolbar
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var mToggle: ActionBarDrawerToggle
+    private lateinit var mNavView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,27 +44,35 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         initData(savedInstanceState)
         initViews()
+        setStartFragment()
 
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            if (supportFragmentManager.fragments.last() is DetailFragment) {
-                supportFragmentManager.fragments.last()
-                setToolbarBehavior(true)
-            }
-        } else {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(
-                    R.id.container,
-                    HomeFragment.newInstance(mMovieList, mFavoriteList)
-                )
-                .commit()
+        if (savedInstanceState != null) {
+            supportActionBar?.title =
+                savedInstanceState.getString(TOOLBAR_TITLE, resources.getString(R.string.app_name))
         }
 
         supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.fragments.last() is DetailFragment)
+            val currentFragment = supportFragmentManager.fragments.last()
+            if (currentFragment is DetailFragment)
                 setToolbarBehavior(true)
-            else
+            else {
                 setToolbarBehavior(false)
+
+                when (currentFragment) {
+                    is HomeFragment -> {
+                        mNavView.setCheckedItem(R.id.nav_home)
+                        supportActionBar?.setTitle(R.string.home)
+                    }
+                    is FavoriteFragment -> {
+                        mNavView.setCheckedItem(R.id.nav_favorite)
+                        supportActionBar?.setTitle(R.string.favorite)
+                    }
+                    is SettingsFragment -> {
+                        mNavView.setCheckedItem(R.id.nav_settings)
+                        supportActionBar?.setTitle(R.string.settings)
+                    }
+                }
+            }
         }
     }
 
@@ -88,6 +98,7 @@ class MainActivity : AppCompatActivity(),
         }
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
+        mNavView = findViewById(R.id.nav_view)
         initNavDrawer()
     }
 
@@ -100,14 +111,33 @@ class MainActivity : AppCompatActivity(),
         )
         mDrawerLayout.addDrawerListener(mToggle)
         mToggle.syncState()
+        mNavView.setNavigationItemSelectedListener(this)
+    }
 
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        navView.setNavigationItemSelectedListener(this)
+    private fun setStartFragment() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            if (supportFragmentManager.fragments.last() is DetailFragment) {
+                supportFragmentManager.fragments.last()
+                setToolbarBehavior(true)
+            }
+        } else {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.container,
+                    HomeFragment.newInstance(mMovieList, mFavoriteList)
+                )
+                .commit()
+
+            mNavView.setCheckedItem(R.id.nav_home)
+            supportActionBar?.setTitle(R.string.home)
+        }
     }
 
     private fun setToolbarBehavior(isBackButtonEnabled: Boolean) {
         if (isBackButtonEnabled) {
             supportActionBar?.setDisplayHomeAsUpEnabled(isBackButtonEnabled)
+            supportActionBar?.setTitle(R.string.about_movie)
             mToolbar.setNavigationOnClickListener {
                 super.onBackPressed()
             }
@@ -125,6 +155,7 @@ class MainActivity : AppCompatActivity(),
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(MOVIE_LIST, mMovieList)
         outState.putParcelableArrayList(FAVORITE_LIST, mFavoriteList)
+        outState.putString(TOOLBAR_TITLE, mToolbar.title.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -155,6 +186,9 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.nav_favorite -> {
                 startFragment(FavoriteFragment.newInstance(mFavoriteList))
+            }
+            R.id.nav_settings -> {
+                startFragment(SettingsFragment())
             }
             R.id.nav_change_theme -> {
                 switchTheme()
@@ -214,22 +248,27 @@ class MainActivity : AppCompatActivity(),
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.dialog_exit)
-            dialog.window?.setBackgroundDrawable(this.getDrawable(R.drawable.dialog_rounded_background))
-            dialog.findViewById<Button>(R.id.exit_positive_button).setOnClickListener {
-                super.onBackPressed()
-            }
-            dialog.findViewById<Button>(R.id.exit_negative_button).setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.show()
+            getExitDialog()
         }
+    }
+
+    private fun getExitDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_exit)
+        dialog.window?.setBackgroundDrawable(this.getDrawable(R.drawable.dialog_rounded_background))
+        dialog.findViewById<Button>(R.id.exit_positive_button).setOnClickListener {
+            super.onBackPressed()
+        }
+        dialog.findViewById<Button>(R.id.exit_negative_button).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     companion object {
         const val MOVIE_LIST = "movies"
         const val FAVORITE_LIST = "favorites"
+        const val TOOLBAR_TITLE = "toolbar_title"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
     }

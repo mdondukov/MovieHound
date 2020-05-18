@@ -22,4 +22,5 @@
     <string name="close" translatable="false">Close</string>
     <string name="change_theme">Сменить тему</string>
     <string name="search">Поиск</string>
+    <string name="about_movie">Информация о фильме</string>
 </resources>
