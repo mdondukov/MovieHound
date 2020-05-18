@@ -12,7 +12,14 @@
     <string name="exit_dialog_title">Уже уходите?</string>
     <string name="exit_positive">Да, выйти</string>
     <string name="exit_negative">Отмена</string>
-    <string name="settings">Сменить тему</string>
+    <string name="settings">Настройки</string>
     <string name="favorite">Избранное</string>
     <string name="home">Главная</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="nav_header_title" translatable="false">MovieHound</string>
+    <string name="nav_header_subtitle" translatable="false">imdb.com</string>
+    <string name="open" translatable="false">Open</string>
+    <string name="close" translatable="false">Close</string>
+    <string name="change_theme">Сменить тему</string>
+    <string name="search">Поиск</string>
 </resources>

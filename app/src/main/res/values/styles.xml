@@ -27,6 +27,10 @@
 
     <style name="Widget.MovieHound.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Widget.MovieHound.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="fontFamily">@font/montserrat_semi_bold</item>
+    </style>
+
     <style name="Widget.MovieHound.ImageView" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:scaleType">centerCrop</item>
