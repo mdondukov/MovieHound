@@ -1,4 +1,4 @@
-package com.example.moviehound.ui.fragments
+package com.example.moviehound.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,28 +8,28 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.moviehound.MainActivity
+import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
 import com.example.moviehound.util.doOnApplyWindowInsets
 import com.google.android.material.textfield.TextInputEditText
 
-class DetailFragment : Fragment() {
-    private lateinit var mMovie: Movie
-    private lateinit var mFavoriteList: ArrayList<Movie>
-    private lateinit var mCoverImageView: ImageView
-    private lateinit var mTitleTextView: TextView
-    private lateinit var mDescTextView: TextView
-    private lateinit var mFavoriteImageView: ImageView
-    private lateinit var mInvitationImageView: ImageView
-    private lateinit var mCommentEditText: TextInputEditText
+class MovieFragment : Fragment() {
+    private lateinit var movie: Movie
+    private lateinit var favoriteList: ArrayList<Movie>
+    private lateinit var posterIv: ImageView
+    private lateinit var titleTv: TextView
+    private lateinit var overviewTv: TextView
+    private lateinit var favoriteIv: ImageView
+    private lateinit var inviteIv: ImageView
+    private lateinit var commentEt: TextInputEditText
     private var listener: OnMovieChanged? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        return inflater.inflate(R.layout.fragment_movie, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,18 +44,18 @@ class DetailFragment : Fragment() {
             insets
         }
 
-        mFavoriteImageView.setOnClickListener {
+        favoriteIv.setOnClickListener {
             if (it.isSelected) {
                 setFavoriteStatus(it, false)
-                mFavoriteList.remove(mMovie)
+                favoriteList.remove(movie)
             } else {
                 setFavoriteStatus(it, true)
-                mFavoriteList.add(mMovie)
+                favoriteList.add(movie)
             }
         }
 
-        mInvitationImageView.setOnClickListener {
-            val title = mTitleTextView.text
+        inviteIv.setOnClickListener {
+            val title = titleTv.text
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.invitation, title))
@@ -64,31 +64,32 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        mCoverImageView = view.findViewById(R.id.cover_image_view)
-        mTitleTextView = view.findViewById(R.id.title_text_view)
-        mDescTextView = view.findViewById(R.id.desc_text_view)
-        mFavoriteImageView = view.findViewById(R.id.favorite_image_view)
-        mInvitationImageView = view.findViewById(R.id.invitation_image_view)
-        mCommentEditText = view.findViewById(R.id.comment_edit_text)
+        posterIv = view.findViewById(R.id.poster_iv)
+        titleTv = view.findViewById(R.id.title_tv)
+        overviewTv = view.findViewById(R.id.overview_tv)
+        favoriteIv = view.findViewById(R.id.favorite_iv)
+        inviteIv = view.findViewById(R.id.invite_iv)
+        commentEt = view.findViewById(R.id.comment_et)
     }
 
     private fun setData() {
         arguments?.let {
-            mMovie = it.getParcelable(Movie::class.java.simpleName)!!
-            mFavoriteList = it.getParcelableArrayList(MainActivity.FAVORITE_LIST)!!
+            movie = it.getParcelable<Movie>(Movie::class.java.simpleName) as Movie
+            favoriteList =
+                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
 
-        mCoverImageView.setImageResource(mMovie.mCoverResId)
-        mTitleTextView.text = mMovie.mTitle
-        mDescTextView.text = mMovie.mDesc
-        mCommentEditText.setText(mMovie.mComment)
+        posterIv.setImageResource(movie.posterResId)
+        titleTv.text = movie.title
+        overviewTv.text = movie.overview
+        commentEt.setText(movie.comment)
 
-        if (mFavoriteList.size != 0) {
-            val itemExists: Boolean = checkAvailability(mFavoriteList, mMovie)
-            if (itemExists) setFavoriteStatus(mFavoriteImageView, true)
-            else setFavoriteStatus(mFavoriteImageView, false)
+        if (favoriteList.size != 0) {
+            val itemExists: Boolean = checkAvailability(favoriteList, movie)
+            if (itemExists) setFavoriteStatus(favoriteIv, true)
+            else setFavoriteStatus(favoriteIv, false)
 
-        } else setFavoriteStatus(mFavoriteImageView, false)
+        } else setFavoriteStatus(favoriteIv, false)
     }
 
     private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
@@ -110,26 +111,26 @@ class DetailFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         saveComment()
-        listener?.setMovieResult(mMovie, mFavoriteList)
+        listener?.setMovieResult(movie, favoriteList)
     }
 
     private fun saveComment() {
-        val comment = mCommentEditText.text.toString()
-        mMovie.mComment = comment
+        val comment = commentEt.text.toString()
+        movie.comment = comment
     }
 
     companion object {
-        fun newInstance(movie: Movie, favorites: ArrayList<Movie>): DetailFragment {
-            val fragment = DetailFragment()
+        fun newInstance(item: Movie, favorites: ArrayList<Movie>): MovieFragment {
+            val fragment = MovieFragment()
             val bundle = Bundle()
-            bundle.putParcelable(Movie::class.java.simpleName, movie)
-            bundle.putParcelableArrayList(MainActivity.FAVORITE_LIST, favorites)
+            bundle.putParcelable(Movie::class.java.simpleName, item)
+            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
             fragment.arguments = bundle
             return fragment
         }
     }
 
     interface OnMovieChanged {
-        fun setMovieResult(movie: Movie, favorites: ArrayList<Movie>)
+        fun setMovieResult(item: Movie, favorites: ArrayList<Movie>)
     }
 }

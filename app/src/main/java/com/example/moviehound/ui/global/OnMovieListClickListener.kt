@@ -1,7 +1,7 @@
-package com.example.moviehound
+package com.example.moviehound.ui.global
 
 import com.example.moviehound.data.Movie
 
 interface OnMovieListClickListener {
-    fun onMovieClick(movie: Movie)
+    fun onMovieClick(item: Movie)
 }

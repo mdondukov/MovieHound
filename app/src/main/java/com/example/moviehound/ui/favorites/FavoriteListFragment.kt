@@ -1,4 +1,4 @@
-package com.example.moviehound.ui.fragments
+package com.example.moviehound.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,32 +7,30 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviehound.MainActivity
-import com.example.moviehound.OnMovieListClickListener
+import com.example.moviehound.AppActivity
+import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
-import com.example.moviehound.ui.adapters.MovieAdapter
-import com.example.moviehound.ui.itemdecorations.MovieItemDecoration
+import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 import com.example.moviehound.util.doOnApplyWindowInsets
 
-class HomeFragment : Fragment() {
-    private lateinit var mMovieList: ArrayList<Movie>
-    private lateinit var mFavoriteList: ArrayList<Movie>
-    private lateinit var mAdapter: MovieAdapter
+class FavoriteListFragment : Fragment() {
+    private lateinit var favoriteList: ArrayList<Movie>
+    private lateinit var adapter: FavoriteListAdapter
     private var listener: OnMovieListClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_favorite_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setData()
 
-        val recycler = view.findViewById<RecyclerView>(R.id.movie_list)
+        val recycler = view.findViewById<RecyclerView>(R.id.favorite_movie_list)
         recycler.doOnApplyWindowInsets { recyclerView, insets, margin ->
             val params = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
             params.bottomMargin = margin.bottom + insets.systemWindowInsetBottom
@@ -43,8 +41,8 @@ class HomeFragment : Fragment() {
 
     private fun setData() {
         arguments?.let {
-            mMovieList = it.getParcelableArrayList(MainActivity.MOVIE_LIST)!!
-            mFavoriteList = it.getParcelableArrayList(MainActivity.FAVORITE_LIST)!!
+            favoriteList =
+                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
     }
 
@@ -53,13 +51,12 @@ class HomeFragment : Fragment() {
         val layoutManager = GridLayoutManager(context, gridColumnCount)
         recycler.layoutManager = layoutManager
 
-        mAdapter = MovieAdapter(
+        adapter = FavoriteListAdapter(
             LayoutInflater.from(context),
-            mMovieList,
-            mFavoriteList
+            favoriteList
         ) { listener?.onMovieClick(it) }
 
-        recycler.adapter = mAdapter
+        recycler.adapter = adapter
         recycler.addItemDecoration(
             MovieItemDecoration(
                 resources.getDimension(R.dimen.margin_sm).toInt()
@@ -73,11 +70,10 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(movies: ArrayList<Movie>, favorites: ArrayList<Movie>): HomeFragment {
-            val fragment = HomeFragment()
+        fun newInstance(favorites: ArrayList<Movie>): FavoriteListFragment {
+            val fragment = FavoriteListFragment()
             val bundle = Bundle()
-            bundle.putParcelableArrayList(MainActivity.MOVIE_LIST, movies)
-            bundle.putParcelableArrayList(MainActivity.FAVORITE_LIST, favorites)
+            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
             fragment.arguments = bundle
             return fragment
         }

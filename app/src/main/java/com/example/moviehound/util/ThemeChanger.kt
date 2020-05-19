@@ -3,28 +3,28 @@ package com.example.moviehound.util
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import com.example.moviehound.MainActivity
+import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 
 
 object ThemeChanger {
-    private var sCurrentTheme = 0
+    private var currentTheme = 0
     const val THEME_DEFAULT = 0
     const val THEME_PRO = 1
 
     fun changeToTheme(activity: Activity, theme: Int) {
-        sCurrentTheme = theme
+        currentTheme = theme
         activity.finish()
         activity.startActivity(Intent(activity, activity.javaClass))
     }
 
     fun onActivityCreateSetTheme(activity: Activity, settings: SharedPreferences) {
-        if (settings.contains(MainActivity.APP_CURRENT_THEME)) {
-            sCurrentTheme = settings.getInt(
-                MainActivity.APP_CURRENT_THEME, 0)
+        if (settings.contains(AppActivity.APP_CURRENT_THEME)) {
+            currentTheme = settings.getInt(
+                AppActivity.APP_CURRENT_THEME, 0)
         }
 
-        when (sCurrentTheme) {
+        when (currentTheme) {
             THEME_DEFAULT -> activity.setTheme(
                 R.style.Theme_MovieHound
             )

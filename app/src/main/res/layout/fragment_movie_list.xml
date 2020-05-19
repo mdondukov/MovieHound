@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.FavoriteFragment">
+    tools:context=".ui.home.MovieListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorite_movie_list"
+        android:id="@+id/movie_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_movie" />

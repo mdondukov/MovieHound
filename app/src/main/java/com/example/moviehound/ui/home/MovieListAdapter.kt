@@ -1,4 +1,4 @@
-package com.example.moviehound.ui.adapters
+package com.example.moviehound.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +8,17 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
-import com.example.moviehound.ui.viewholders.MovieViewHolder
+import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 
-class MovieAdapter(
-    private val mInflater: LayoutInflater,
-    private var mMovieList: ArrayList<Movie>,
-    private var mFavoriteList: ArrayList<Movie>,
-    private val mListener: (movie: Movie) -> Unit
+class MovieListAdapter(
+    private val inflater: LayoutInflater,
+    private var movieList: ArrayList<Movie>,
+    private var favoriteList: ArrayList<Movie>,
+    private val listener: (movie: Movie) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieViewHolder(
-            mInflater.inflate(
+            inflater.inflate(
                 R.layout.item_movie,
                 parent,
                 false
@@ -26,18 +26,18 @@ class MovieAdapter(
         )
     }
 
-    override fun getItemCount() = mMovieList.size
+    override fun getItemCount() = movieList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MovieViewHolder) {
-            val item = mMovieList[position]
+            val item = movieList[position]
             holder.bind(item)
 
             val favoriteImageView: ImageView =
-                holder.itemView.findViewById(R.id.favorite_image_view)
+                holder.itemView.findViewById(R.id.favorite_iv)
 
-            if (mFavoriteList.size != 0) {
-                val itemExists: Boolean = checkAvailability(mFavoriteList, item)
+            if (favoriteList.size != 0) {
+                val itemExists: Boolean = checkAvailability(favoriteList, item)
                 if (itemExists) setFavoriteStatus(favoriteImageView, true)
                 else setFavoriteStatus(favoriteImageView, false)
 
@@ -46,15 +46,15 @@ class MovieAdapter(
             favoriteImageView.setOnClickListener {
                 if (it.isSelected) {
                     setFavoriteStatus(it, false)
-                    mFavoriteList.remove(item)
+                    favoriteList.remove(item)
                 } else {
                     setFavoriteStatus(it, true)
-                    mFavoriteList.add(item)
+                    favoriteList.add(item)
                 }
             }
 
             holder.itemView.findViewById<Button>(R.id.detail_button)
-                .setOnClickListener { mListener.invoke(item) }
+                .setOnClickListener { listener.invoke(item) }
         }
     }
 

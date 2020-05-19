@@ -27,13 +27,13 @@
         android:textColor="?android:attr/textColorPrimary" />
 
     <Button
-        android:id="@+id/exit_positive_button"
+        android:id="@+id/exit_positive_btn"
         style="@style/Widget.MovieHound.Button.Exit"
         android:layout_marginBottom="@dimen/margin_xs"
         android:text="@string/exit_positive" />
 
     <Button
-        android:id="@+id/exit_negative_button"
+        android:id="@+id/exit_negative_btn"
         style="@style/Widget.MovieHound.Button.Exit.Outline"
         android:text="@string/exit_negative" />
 

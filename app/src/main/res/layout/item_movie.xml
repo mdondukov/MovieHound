@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/cover_image_view"
+                android:id="@+id/poster_iv"
                 style="@style/Widget.MovieHound.ImageView"
                 android:layout_height="@dimen/cover_main_height"
                 tools:ignore="ContentDescription"
@@ -28,7 +28,7 @@
                 android:layout_gravity="top|end">
 
                 <ImageView
-                    android:id="@+id/favorite_image_view"
+                    android:id="@+id/favorite_iv"
                     style="@style/Widget.MovieHound.Icon"
                     android:onClick="onFavoriteClick"
                     android:src="@drawable/ic_favorite_check"
@@ -39,7 +39,7 @@
             <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
 
                 <TextView
-                    android:id="@+id/title_text_view"
+                    android:id="@+id/title_tv"
                     style="@style/Widget.MovieHound.TextView.Title"
                     android:textColor="?android:attr/textColorPrimaryInverse"
                     tools:text="@string/sw_4_title" />

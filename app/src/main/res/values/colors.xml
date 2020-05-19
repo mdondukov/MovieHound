@@ -5,6 +5,10 @@
     <color name="colorAccent">#F5DA4A</color>
     <color name="transparentDark">#A6000000</color>
 
+    <color name="black_20">#32000000</color>
+    <color name="white">#ffffff</color>
+    <color name="white_50">#80ffffff</color>
+
     <color name="colorPrimaryPro">#EE0000</color>
     <color name="colorPrimaryDarkPro">#B30000</color>
     <color name="colorAccentPro">#FF9100</color>

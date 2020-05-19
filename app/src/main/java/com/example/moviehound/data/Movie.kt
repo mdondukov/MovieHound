@@ -5,11 +5,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Movie(
-    val mId: Int,
-    val mCoverResId: Int,
-    val mTitle: String,
-    val mDesc: String,
-    var mComment: String
+    val id: Int,
+    val posterResId: Int,
+    val title: String,
+    val overview: String,
+    var comment: String
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -17,12 +17,12 @@ data class Movie(
 
         other as Movie
 
-        if (mId != other.mId) return false
+        if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return mId
+        return id
     }
 }

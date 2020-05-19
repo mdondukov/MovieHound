@@ -1,4 +1,4 @@
-package com.example.moviehound.ui.itemdecorations
+package com.example.moviehound.ui.global.itemdecoration
 
 import android.graphics.Rect
 import android.view.View
