@@ -16,8 +16,8 @@
     <string name="change_theme">Change theme</string>
     <string name="search">Search</string>
     <string name="about_movie">About this movie</string>
-    <string name="favorite_removed">Movie removed from \"Favorites\"</string>
     <string name="cancel">Cancel</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="favorite_remove">The movie removed from \"Favorites\". %1$s s.</string>
 </resources>

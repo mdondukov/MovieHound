@@ -1,5 +1,6 @@
 package com.example.moviehound.ui.favorites
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
@@ -55,16 +56,45 @@ class FavoriteListAdapter(
         index: Int,
         item: Movie
     ) {
-        val view = holder.itemView
-        Snackbar.make(
-            view,
-            view.context.resources.getString(R.string.favorite_removed),
-            Snackbar.LENGTH_LONG
-        )
-            .setAction(view.context.resources.getString(R.string.cancel)) {
-                favoriteList.add(index, item)
-                notifyDataSetChanged()
+        holder.apply {
+            var counter = 5
+            val snackbar = Snackbar.make(
+                itemView,
+                itemView.resources.getString(
+                    R.string.favorite_remove,
+                    counter.toString()
+                ),
+                Snackbar.LENGTH_INDEFINITE
+            )
+            val snCallback: Snackbar.Callback = object : Snackbar.Callback() {
+                override fun onShown(sb: Snackbar?) {
+                    sb?.apply {
+                        object : CountDownTimer(5000, 1000) {
+                            override fun onTick(millisUntilFinished: Long) {
+                                setText(
+                                    itemView.resources.getString(
+                                        R.string.favorite_remove,
+                                        counter.toString()
+                                    )
+                                )
+                                counter--
+                            }
+                            override fun onFinish() {
+                                dismiss()
+                            }
+                        }.start()
+                    }
+                }
             }
-            .show()
+
+            snackbar.apply {
+                addCallback(snCallback)
+                setAction(itemView.context.resources.getString(R.string.cancel)) {
+                    favoriteList.add(index, item)
+                    notifyDataSetChanged()
+                }
+                show()
+            }
+        }
     }
 }

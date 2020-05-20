@@ -22,6 +22,6 @@
     <string name="change_theme">Сменить тему</string>
     <string name="search">Поиск</string>
     <string name="about_movie">Информация о фильме</string>
-    <string name="favorite_removed">Фильм удален из \"Избранного\"</string>
     <string name="cancel">Отмена</string>
+    <string name="favorite_remove">Фильм удален из \"Избранного\". %1$s сек.</string>
 </resources>
