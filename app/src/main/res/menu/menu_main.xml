@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AppActivity">
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_switch_theme"
         android:orderInCategory="10"
-        android:title="@string/search"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_search_white"/>
+        android:title="@string/switch_theme"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_image_gray"/>
 </menu>

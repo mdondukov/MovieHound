@@ -8,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
-import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
-import com.example.moviehound.util.doOnApplyWindowInsets
 
 class FavoriteListFragment : Fragment() {
     private lateinit var favoriteList: ArrayList<Movie>
@@ -31,11 +30,6 @@ class FavoriteListFragment : Fragment() {
         setData()
 
         val recycler = view.findViewById<RecyclerView>(R.id.favorite_movie_list)
-        recycler.doOnApplyWindowInsets { recyclerView, insets, margin ->
-            val params = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = margin.bottom + insets.systemWindowInsetBottom
-            insets
-        }
         initRecycler(recycler)
     }
 

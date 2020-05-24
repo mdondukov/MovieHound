@@ -3,90 +3,45 @@ package com.example.moviehound
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.moviehound.data.Movie
 import com.example.moviehound.data.Storage
-import com.example.moviehound.ui.detail.MovieFragment
+import com.example.moviehound.ui.detail.DetailFragment
 import com.example.moviehound.ui.favorites.FavoriteListFragment
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.home.MovieListFragment
+import com.example.moviehound.ui.search.SearchFragment
 import com.example.moviehound.util.ThemeChanger
-import com.example.moviehound.util.doOnApplyWindowInsets
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AppActivity : AppCompatActivity(),
-    NavigationView.OnNavigationItemSelectedListener,
     OnMovieListClickListener,
-    MovieFragment.OnMovieChanged {
+    DetailFragment.OnMovieChanged {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var movieList: ArrayList<Movie>
     private lateinit var favoriteList: ArrayList<Movie>
-    private lateinit var toolbar: Toolbar
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var navView: NavigationView
+    private lateinit var navView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         ThemeChanger.onActivityCreateSetTheme(this, sharedPreferences)
-
-        window.apply {
-            decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                decorView.systemUiVisibility = decorView.systemUiVisibility or
-                        View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-
-            navigationBarColor =
-                ContextCompat.getColor(context, R.color.white)
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app)
 
         initData(savedInstanceState)
-        initViews()
+        initBottomNavigation()
         setStartFragment()
 
-        if (savedInstanceState != null) {
-            supportActionBar?.title =
-                savedInstanceState.getString(TOOLBAR_TITLE, resources.getString(R.string.app_name))
-        }
-
         supportFragmentManager.addOnBackStackChangedListener {
-            val currentFragment = supportFragmentManager.fragments.last()
-            if (currentFragment is MovieFragment)
-                setToolbarBehavior(true)
-            else {
-                setToolbarBehavior(false)
-
-                when (currentFragment) {
-                    is MovieListFragment -> {
-                        navView.setCheckedItem(R.id.nav_home)
-                        supportActionBar?.setTitle(R.string.home)
-                    }
-                    is FavoriteListFragment -> {
-                        navView.setCheckedItem(R.id.nav_favorite)
-                        supportActionBar?.setTitle(R.string.favorite)
-                    }
-                }
+            if (supportFragmentManager.fragments.last() !is DetailFragment) {
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
             }
         }
     }
@@ -104,72 +59,52 @@ class AppActivity : AppCompatActivity(),
         }
     }
 
-    private fun initViews() {
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        toolbar.doOnApplyWindowInsets { view, insets, margin ->
-            val params = view.layoutParams as MarginLayoutParams
-            params.topMargin = margin.top + insets.systemWindowInsetTop
-            insets
-        }
-
-        drawerLayout = findViewById(R.id.drawer_layout)
+    private fun initBottomNavigation() {
         navView = findViewById(R.id.nav_view)
-        navView.doOnApplyWindowInsets { view, insets, margin ->
-            val params = view.layoutParams as MarginLayoutParams
-            params.bottomMargin = margin.bottom + insets.systemWindowInsetBottom
-            insets
+        navView.setOnNavigationItemSelectedListener {
+            val currentFragment = supportFragmentManager.fragments.last()
+            when (it.itemId) {
+                R.id.navigation_home -> {
+                    if (currentFragment !is MovieListFragment)
+                        supportFragmentManager.popBackStack(
+                            null,
+                            FragmentManager.POP_BACK_STACK_INCLUSIVE
+                        )
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.navigation_favorite -> {
+                    if (currentFragment !is FavoriteListFragment)
+                        doFragment(FavoriteListFragment.newInstance(favoriteList))
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.navigation_search -> {
+                    if (currentFragment !is SearchFragment)
+                        doFragment(SearchFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> return@setOnNavigationItemSelectedListener false
+            }
         }
-        initNavDrawer()
     }
 
-    private fun initNavDrawer() {
-        toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.open, R.string.close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
+    private fun doFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun setStartFragment() {
         if (supportFragmentManager.backStackEntryCount > 0) {
-            if (supportFragmentManager.fragments.last() is MovieFragment) {
+            if (supportFragmentManager.fragments.last() is DetailFragment) {
                 supportFragmentManager.fragments.last()
-                setToolbarBehavior(true)
             }
         } else {
             supportFragmentManager
                 .beginTransaction()
-                .replace(
-                    R.id.container,
-                    MovieListFragment.newInstance(movieList, favoriteList)
-                )
+                .replace(R.id.container, MovieListFragment.newInstance(movieList, favoriteList))
                 .commit()
-
-            navView.setCheckedItem(R.id.nav_home)
-            supportActionBar?.setTitle(R.string.home)
-        }
-    }
-
-    private fun setToolbarBehavior(isBackButtonEnabled: Boolean) {
-        if (isBackButtonEnabled) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(isBackButtonEnabled)
-            supportActionBar?.setTitle(R.string.about_movie)
-            toolbar.setNavigationOnClickListener {
-                super.onBackPressed()
-            }
-        } else {
-            supportActionBar?.setDisplayHomeAsUpEnabled(isBackButtonEnabled)
-            drawerLayout.addDrawerListener(toggle)
-            toggle.syncState()
-            toolbar.setNavigationOnClickListener {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
         }
     }
 
@@ -177,7 +112,6 @@ class AppActivity : AppCompatActivity(),
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(MOVIE_LIST, movieList)
         outState.putParcelableArrayList(FAVORITE_LIST, favoriteList)
-        outState.putString(TOOLBAR_TITLE, toolbar.title.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -187,46 +121,12 @@ class AppActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_search -> {
+            R.id.action_switch_theme -> {
+                switchTheme()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_home -> {
-                if (supportFragmentManager.fragments.last() is MovieListFragment) {
-                    supportFragmentManager.fragments.last()
-                } else {
-                    supportFragmentManager.popBackStack(
-                        null,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE
-                    )
-                }
-            }
-            R.id.nav_favorite -> {
-                startFragment(FavoriteListFragment.newInstance(favoriteList))
-            }
-            R.id.nav_change_theme -> {
-                switchTheme()
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    private fun startFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.container,
-                fragment,
-                fragment::class.java.simpleName
-            )
-            .addToBackStack(null)
-            .commit()
     }
 
     private fun switchTheme() {
@@ -254,7 +154,8 @@ class AppActivity : AppCompatActivity(),
     }
 
     override fun onMovieClick(item: Movie) {
-        startFragment(MovieFragment.newInstance(item, favoriteList))
+        doFragment(DetailFragment.newInstance(item, favoriteList))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun setMovieResult(item: Movie, favorites: ArrayList<Movie>) {
@@ -264,30 +165,30 @@ class AppActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
+        if (supportFragmentManager.fragments.last() is DetailFragment) {
             supportFragmentManager.popBackStack()
-        } else {
-            getExitDialog()
-        }
+        } else showExitDialog()
     }
 
-    private fun getExitDialog() {
+    private fun showExitDialog() {
         val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_exit)
-        dialog.window?.setBackgroundDrawable(this.getDrawable(R.drawable.dialog_rounded_bg))
-        dialog.findViewById<Button>(R.id.exit_positive_btn).setOnClickListener {
-            super.onBackPressed()
+        dialog.apply {
+            setContentView(R.layout.dialog_exit)
+            window?.setBackgroundDrawable(context.getDrawable(R.drawable.dialog_rounded_bg))
+            findViewById<Button>(R.id.exit_positive_btn).setOnClickListener {
+                dialog.dismiss()
+                super.onBackPressed()
+            }
+            findViewById<Button>(R.id.exit_negative_btn).setOnClickListener {
+                dialog.dismiss()
+            }
+            show()
         }
-        dialog.findViewById<Button>(R.id.exit_negative_btn).setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.show()
     }
 
     companion object {
         const val MOVIE_LIST = "movies"
         const val FAVORITE_LIST = "favorites"
-        const val TOOLBAR_TITLE = "toolbar_title"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
     }

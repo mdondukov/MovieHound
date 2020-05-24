@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
-import com.example.moviehound.util.doOnApplyWindowInsets
 import com.google.android.material.textfield.TextInputEditText
 
-class MovieFragment : Fragment() {
+class DetailFragment : Fragment() {
     private lateinit var movie: Movie
     private lateinit var favoriteList: ArrayList<Movie>
+    private lateinit var toolbar: Toolbar
     private lateinit var posterIv: ImageView
     private lateinit var titleTv: TextView
     private lateinit var overviewTv: TextView
@@ -25,11 +26,16 @@ class MovieFragment : Fragment() {
     private lateinit var commentEt: TextInputEditText
     private var listener: OnMovieChanged? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.window?.statusBarColor = resources.getColor(R.color.black_20)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_movie, container, false)
+        return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,11 +43,8 @@ class MovieFragment : Fragment() {
         initViews(view)
         setData()
 
-        val rootView = view.findViewById<View>(R.id.detail_root_view)
-        rootView.doOnApplyWindowInsets { recyclerView, insets, margin ->
-            val params = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = margin.bottom + insets.systemWindowInsetBottom
-            insets
+        toolbar.setNavigationOnClickListener {
+            fragmentManager?.popBackStack()
         }
 
         favoriteIv.setOnClickListener {
@@ -55,15 +58,25 @@ class MovieFragment : Fragment() {
         }
 
         inviteIv.setOnClickListener {
-            val title = titleTv.text
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.invitation, title))
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                resources.getString(R.string.invitation, movie.title)
+            )
             startActivity(intent)
         }
     }
 
     private fun initViews(view: View) {
+        toolbar = view.findViewById(R.id.toolbar_detail)
+        (activity as AppActivity).apply {
+            setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+            supportActionBar?.setHomeButtonEnabled(true)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
         posterIv = view.findViewById(R.id.poster_iv)
         titleTv = view.findViewById(R.id.title_tv)
         overviewTv = view.findViewById(R.id.overview_tv)
@@ -78,7 +91,6 @@ class MovieFragment : Fragment() {
             favoriteList =
                 it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
-
         posterIv.setImageResource(movie.posterResId)
         titleTv.text = movie.title
         overviewTv.text = movie.overview
@@ -120,8 +132,8 @@ class MovieFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(item: Movie, favorites: ArrayList<Movie>): MovieFragment {
-            val fragment = MovieFragment()
+        fun newInstance(item: Movie, favorites: ArrayList<Movie>): DetailFragment {
+            val fragment = DetailFragment()
             val bundle = Bundle()
             bundle.putParcelable(Movie::class.java.simpleName, item)
             bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)

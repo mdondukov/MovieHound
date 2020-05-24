@@ -25,7 +25,8 @@
 
             <LinearLayout
                 style="@style/Widget.MovieHound.LinearLayout.Blackout"
-                android:layout_gravity="top|end">
+                android:layout_gravity="top|end"
+                android:background="@drawable/button_overlay_bg">
 
                 <ImageView
                     android:id="@+id/favorite_iv"

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AppActivity">
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="1"
+        android:title="@string/favorite"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_favorite_check"/>
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="2"
+        android:title="@string/invitation"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share_white"/>
+    <item
+        android:id="@+id/action_switch_theme"
+        android:orderInCategory="3"
+        android:title="@string/switch_theme"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_image_gray"/>
+</menu>
