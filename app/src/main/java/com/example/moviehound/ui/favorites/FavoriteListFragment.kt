@@ -57,7 +57,7 @@ class FavoriteListFragment : Fragment() {
         recycler.adapter = adapter
         recycler.addItemDecoration(
             MovieItemDecoration(
-                resources.getDimension(R.dimen.margin_xxs).toInt()
+                resources.getDimension(R.dimen.space_4).toInt()
             )
         )
     }

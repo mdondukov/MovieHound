@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/padding_sm">
+        android:padding="@dimen/space_16">
 
         <TextView
             android:id="@+id/title_tv"
@@ -25,14 +25,14 @@
             android:id="@+id/tagline_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxs"
+            android:layout_marginTop="@dimen/space_4"
             android:fontFamily="@font/montserrat_medium"
             tools:text="Star Wars Episode I: A New Hope" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_md">
+            android:layout_marginTop="@dimen/space_24">
 
             <LinearLayout
                 android:id="@+id/trailer_layout"
@@ -49,16 +49,16 @@
                     android:id="@+id/trailer_iv"
                     style="@style/Widget.MovieHound.Icon"
                     android:contentDescription="@string/trailer"
-                    android:src="@drawable/ic_play_white"
+                    android:src="@drawable/ic_play"
                     android:tint="?android:attr/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xs"
+                    android:layout_marginTop="@dimen/space_8"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="@string/trailer"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textSize="@dimen/body" />
 
             </LinearLayout>
 
@@ -83,10 +83,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xs"
+                    android:layout_marginTop="@dimen/space_8"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="@string/favorite"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textSize="@dimen/body" />
 
             </LinearLayout>
 
@@ -105,16 +105,16 @@
                     android:id="@+id/invite_iv"
                     style="@style/Widget.MovieHound.Icon"
                     android:contentDescription="@string/share"
-                    android:src="@drawable/ic_share_white"
+                    android:src="@drawable/ic_share"
                     android:tint="?android:attr/colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xs"
+                    android:layout_marginTop="@dimen/space_8"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="@string/share"
-                    android:textSize="@dimen/content_text_size" />
+                    android:textSize="@dimen/body" />
 
             </LinearLayout>
 
@@ -123,14 +123,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_md"
+            android:layout_marginTop="@dimen/space_24"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/movie_poster_card"
                 android:layout_width="95dp"
                 android:layout_height="128dp"
-                android:layout_marginEnd="@dimen/margin_md"
+                android:layout_marginEnd="@dimen/space_24"
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +163,7 @@
                     android:id="@+id/genres_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xxs"
+                    android:layout_marginTop="@dimen/space_4"
                     android:fontFamily="@font/montserrat_medium"
                     tools:text="Боевик, Фантастика, Приключения"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -172,7 +172,7 @@
                     android:id="@+id/metainfo_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xxs"
+                    android:layout_marginTop="@dimen/space_4"
                     android:fontFamily="@font/montserrat_medium"
                     tools:text="1977, США, 139 мин."
                     android:textColor="?android:attr/textColorPrimary" />
@@ -182,7 +182,7 @@
                     style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_xxs" />
+                    android:layout_marginTop="@dimen/space_4" />
 
             </LinearLayout>
 
@@ -191,8 +191,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_md"
-            android:layout_marginBottom="@dimen/margin_xs"
+            android:layout_marginTop="@dimen/space_24"
+            android:layout_marginBottom="@dimen/space_8"
             android:fontFamily="@font/montserrat_semi_bold"
             android:text="@string/description"
             android:textColor="?android:attr/textColorPrimary" />
@@ -202,13 +202,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
-            android:textSize="@dimen/content_text_size"
+            android:textSize="@dimen/body"
             tools:text="@string/sw_4_desc" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_md"
+            android:layout_marginTop="@dimen/space_24"
             app:hintTextAppearance="@style/TextAppearance.MovieHound.HintText">
 
             <com.google.android.material.textfield.TextInputEditText

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/navigation_home"
         android:title="@string/home"
-        android:icon="@drawable/ic_local_movies_gray"/>
+        android:icon="@drawable/ic_local_movies"/>
     <item
         android:id="@+id/navigation_favorite"
         android:title="@string/favorite"
@@ -11,5 +11,5 @@
     <item
         android:id="@+id/navigation_search"
         android:title="@string/search"
-        android:icon="@drawable/ic_search_gray"/>
+        android:icon="@drawable/ic_search"/>
 </menu>

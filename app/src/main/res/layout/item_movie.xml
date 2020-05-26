@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp">
+        app:cardCornerRadius="@dimen/card_corners_radius">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -45,8 +45,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_xxs"
-        android:layout_marginBottom="@dimen/margin_xxs"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_marginBottom="@dimen/space_4"
         android:orientation="vertical">
 
         <TextView
@@ -63,7 +63,7 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxs" />
+            android:layout_marginTop="@dimen/space_4" />
     </LinearLayout>
 
 </LinearLayout>

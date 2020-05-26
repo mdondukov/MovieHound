@@ -8,5 +8,5 @@
         android:orderInCategory="10"
         android:title="@string/switch_theme"
         app:showAsAction="never"
-        android:icon="@drawable/ic_image_gray"/>
+        android:icon="@drawable/ic_image"/>
 </menu>
