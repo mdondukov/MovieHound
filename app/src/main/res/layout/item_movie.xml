@@ -26,7 +26,7 @@
                 tools:src="@drawable/img_sw_4" />
 
             <LinearLayout
-                style="@style/Widget.MovieHound.LinearLayout.Blackout"
+                style="@style/Widget.MovieHound.LinearLayout.Transparent"
                 android:layout_gravity="top|end"
                 android:background="@drawable/button_overlay_bg">
 

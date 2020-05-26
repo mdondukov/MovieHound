@@ -34,14 +34,14 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="Widget.MovieHound.LinearLayout.Blackout" parent="">
+    <style name="Widget.MovieHound.LinearLayout.Transparent" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingTop">@dimen/padding_8</item>
-        <item name="android:paddingBottom">@dimen/padding_8</item>
-        <item name="android:paddingStart">@dimen/padding_4</item>
-        <item name="android:paddingEnd">@dimen/padding_4</item>
+        <item name="android:paddingTop">@dimen/space_8</item>
+        <item name="android:paddingBottom">@dimen/space_8</item>
+        <item name="android:paddingStart">@dimen/space_4</item>
+        <item name="android:paddingEnd">@dimen/space_4</item>
     </style>
 
     <style name="Widget.MovieHound.Icon" parent="">
@@ -49,19 +49,7 @@
         <item name="android:layout_height">@dimen/ic_size</item>
     </style>
 
-    <style name="Widget.MovieHound.LinearLayout.Gradient" parent="">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:paddingTop">@dimen/space_32</item>
-        <item name="android:paddingBottom">@dimen/space_32</item>
-        <item name="android:paddingStart">@dimen/padding_24</item>
-        <item name="android:paddingEnd">@dimen/padding_24</item>
-        <item name="android:background">@drawable/gradient_bg</item>
-    </style>
-
-    <style name="Widget.MovieHound.TextView.Title" parent="">
+    <style name="Widget.MovieHound.TextView.Large" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/montserrat_semi_bold</item>

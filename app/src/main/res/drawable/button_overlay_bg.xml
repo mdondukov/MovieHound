@@ -5,7 +5,7 @@
             <corners
                 android:topRightRadius="@dimen/bg_radius"
                 android:bottomLeftRadius="@dimen/bg_radius"/>
-            <solid android:color="@color/transparentDark"/>
+            <solid android:color="@color/black_65"/>
         </shape>
     </item>
 </selector>

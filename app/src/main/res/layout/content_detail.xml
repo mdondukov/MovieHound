@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/title_tv"
-            style="@style/Widget.MovieHound.TextView.Title"
+            style="@style/Widget.MovieHound.TextView.Large"
             android:textColor="?android:attr/textColorPrimary"
             tools:text="@string/sw_4_title" />
 
