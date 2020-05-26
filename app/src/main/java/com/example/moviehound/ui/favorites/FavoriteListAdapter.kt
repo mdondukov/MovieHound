@@ -2,8 +2,8 @@ package com.example.moviehound.ui.favorites
 
 import android.os.CountDownTimer
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
@@ -46,7 +46,7 @@ class FavoriteListAdapter(
                 getFavoriteRemoveSnackbar(holder, index, item)
             }
 
-            holder.itemView.findViewById<Button>(R.id.detail_button)
+            holder.itemView.findViewById<View>(R.id.movie_layout)
                 .setOnClickListener { listener(item) }
         }
     }

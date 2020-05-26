@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="details">Details</string>
-    <string name="share">Invite a friend</string>
+    <string name="share">Share</string>
     <string name="description">Description</string>
     <string name="comment">Comment</string>
     <string name="hint_message">Enter the text</string>

@@ -38,7 +38,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/padding_md</item>
+        <item name="android:paddingTop">@dimen/padding_xs</item>
+        <item name="android:paddingBottom">@dimen/padding_xs</item>
+        <item name="android:paddingStart">@dimen/padding_xxs</item>
+        <item name="android:paddingEnd">@dimen/padding_xxs</item>
     </style>
 
     <style name="Widget.MovieHound.Icon" parent="">
@@ -103,7 +106,7 @@
     <style name="Widget.MovieHound.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="colorControlNormal">?android:attr/textColorPrimary</item>
         <item name="colorControlActivated">?attr/colorPrimary</item>
-        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">@dimen/content_text_size</item>
     </style>
 

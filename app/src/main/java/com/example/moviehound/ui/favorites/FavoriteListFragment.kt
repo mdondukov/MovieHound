@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,9 @@ class FavoriteListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        (activity as AppActivity).setSupportActionBar(toolbar)
+
         setData()
 
         val recycler = view.findViewById<RecyclerView>(R.id.favorite_movie_list)
@@ -53,7 +57,7 @@ class FavoriteListFragment : Fragment() {
         recycler.adapter = adapter
         recycler.addItemDecoration(
             MovieItemDecoration(
-                resources.getDimension(R.dimen.margin_sm).toInt()
+                resources.getDimension(R.dimen.margin_xxs).toInt()
             )
         )
     }

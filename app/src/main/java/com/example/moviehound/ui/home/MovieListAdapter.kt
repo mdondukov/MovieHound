@@ -3,7 +3,6 @@ package com.example.moviehound.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
@@ -53,7 +52,7 @@ class MovieListAdapter(
                 }
             }
 
-            holder.itemView.findViewById<Button>(R.id.detail_button)
+            holder.itemView.findViewById<View>(R.id.movie_layout)
                 .setOnClickListener { listener.invoke(item) }
         }
     }

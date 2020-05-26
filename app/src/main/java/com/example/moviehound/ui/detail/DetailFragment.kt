@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -19,17 +20,18 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
     private lateinit var posterIv: ImageView
+    private lateinit var backdropIv: ImageView
     private lateinit var titleTv: TextView
+    private lateinit var originalTitleTv: TextView
+    private lateinit var taglineTv: TextView
+    private lateinit var genresTv: TextView
+    private lateinit var metainfoTv: TextView
+    private lateinit var ratingBar: RatingBar
     private lateinit var overviewTv: TextView
     private lateinit var favoriteIv: ImageView
     private lateinit var inviteIv: ImageView
     private lateinit var commentEt: TextInputEditText
     private var listener: OnMovieChanged? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.window?.statusBarColor = resources.getColor(R.color.black_20)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,9 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.statusBarColor =
+            requireContext().resources.getColor(R.color.black_20)
+
         initViews(view)
         setData()
 
@@ -78,7 +83,13 @@ class DetailFragment : Fragment() {
         }
 
         posterIv = view.findViewById(R.id.poster_iv)
+        backdropIv = view.findViewById(R.id.backdrop_iv)
         titleTv = view.findViewById(R.id.title_tv)
+        originalTitleTv = view.findViewById(R.id.original_title_tv)
+        taglineTv = view.findViewById(R.id.tagline_tv)
+        genresTv = view.findViewById(R.id.genres_tv)
+        metainfoTv = view.findViewById(R.id.metainfo_tv)
+        ratingBar = view.findViewById(R.id.rating_bar)
         overviewTv = view.findViewById(R.id.overview_tv)
         favoriteIv = view.findViewById(R.id.favorite_iv)
         inviteIv = view.findViewById(R.id.invite_iv)
@@ -92,9 +103,23 @@ class DetailFragment : Fragment() {
                 it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
         posterIv.setImageResource(movie.posterResId)
+        backdropIv.setImageResource(movie.backdropResId)
         titleTv.text = movie.title
+        originalTitleTv.text = movie.originalTitle
         overviewTv.text = movie.overview
         commentEt.setText(movie.comment)
+
+        if (movie.tagline.isNotEmpty()) taglineTv.text = movie.tagline
+        else taglineTv.visibility = View.GONE
+
+        genresTv.text = movie.genres.joinToString(", ")
+
+        metainfoTv.text = context?.resources?.getString(
+            R.string.metainfo,
+            movie.releaseDate,
+            movie.productionCountries.joinToString(", "),
+            movie.runtime
+        )
 
         if (favoriteList.size != 0) {
             val itemExists: Boolean = checkAvailability(favoriteList, movie)

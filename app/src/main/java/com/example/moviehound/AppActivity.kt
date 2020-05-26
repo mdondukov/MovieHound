@@ -41,7 +41,14 @@ class AppActivity : AppCompatActivity(),
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.fragments.last() !is DetailFragment) {
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+                if (sharedPreferences.contains(APP_CURRENT_THEME)) {
+                    when (sharedPreferences.getInt(APP_CURRENT_THEME, 0)) {
+                        ThemeChanger.THEME_PRO -> window.statusBarColor =
+                            resources.getColor(R.color.colorPrimaryDarkPro)
+                        ThemeChanger.THEME_DEFAULT -> window.statusBarColor =
+                            resources.getColor(R.color.colorPrimaryDark)
+                    }
+                }
             }
         }
     }

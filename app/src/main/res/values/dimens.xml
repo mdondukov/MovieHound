@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="button_radius">24dp</dimen>
-    <dimen name="bg_radius">32dp</dimen>
-    <dimen name="card_radius">32dp</dimen>
+    <dimen name="bg_radius">4dp</dimen>
+    <dimen name="card_radius">4dp</dimen>
     <dimen name="card_elevation">6dp</dimen>
-    <dimen name="app_bar_height">320dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
 
     <dimen name="ic_size">24dp</dimen>
     <dimen name="cover_main_height">500dp</dimen>
     <dimen name="cover_detail_height">320dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <!--  Margin & Padding  -->
+    <dimen name="padding_xxs">4dp</dimen>
     <dimen name="padding_xs">8dp</dimen>
     <dimen name="padding_sm">16dp</dimen>
     <dimen name="margin_xs">8dp</dimen>
@@ -20,8 +21,9 @@
     <dimen name="margin_sm">16dp</dimen>
     <dimen name="margin_md">24dp</dimen>
     <!--  Text  -->
-    <dimen name="title_text_size">24sp</dimen>
+    <dimen name="title_text_size">22sp</dimen>
     <dimen name="drawer_title_size">18sp</dimen>
     <dimen name="subtitle_text_size">18sp</dimen>
-    <dimen name="content_text_size">16sp</dimen>
+    <dimen name="content_text_size">14sp</dimen>
+    <dimen name="ic_label">10sp</dimen>
 </resources>

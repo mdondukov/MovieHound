@@ -3,7 +3,7 @@
     <string name="sw_4_title" translatable="false">Звездные Войны Эпизод IV: Новая Надежда</string>
     <string name="sw_4_desc" translatable="false">Для далекой-далекой Галактики настали трудные времена. Миром правит тираническая Империя. Чистых сердцем, наделенных Силой джедаев, которые борются со злом и несправедливостью, почти не осталось. И все же есть те, кто осмеливается противостоять вселенской диктатуре и жестокости: повстанцев немного, но они сильны духом, сильны надеждой.</string>
     <string name="details">Детали</string>
-    <string name="share">Пригласить друга</string>
+    <string name="share">Поделиться</string>
     <string name="description">Описание</string>
     <string name="comment">Комментарий</string>
     <string name="hint_message">Введите текст</string>
@@ -24,7 +24,7 @@
     <string name="about_movie">Информация о фильме</string>
     <string name="cancel">Отмена</string>
     <string name="favorite_remove">Фильм удален из \"Избранного\". %1$s сек.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="trailer">Трейлер</string>
+    <string name="poster">Постер</string>
+    <string name="metainfo">%1$s, %2$s, %3$d мин.</string>
 </resources>
