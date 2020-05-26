@@ -156,8 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    tools:text="Star Wars Episode I: A New Hope"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Star Wars Episode I: A New Hope" />
 
                 <TextView
                     android:id="@+id/genres_tv"
@@ -165,8 +165,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_4"
                     android:fontFamily="@font/montserrat_medium"
-                    tools:text="Боевик, Фантастика, Приключения"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Боевик, Фантастика, Приключения" />
 
                 <TextView
                     android:id="@+id/metainfo_tv"
@@ -174,8 +174,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_4"
                     android:fontFamily="@font/montserrat_medium"
-                    tools:text="1977, США, 139 мин."
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="1977, США, 139 мин." />
 
                 <RatingBar
                     android:id="@+id/rating_bar"
