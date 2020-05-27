@@ -128,8 +128,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/movie_poster_card"
-                android:layout_width="95dp"
-                android:layout_height="128dp"
+                android:layout_width="94dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_24"
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +139,8 @@
                 <ImageView
                     android:id="@+id/poster_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
                     android:contentDescription="@string/poster"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/img_sw_4" />
@@ -204,23 +205,6 @@
             android:fontFamily="@font/montserrat_medium"
             android:textSize="@dimen/body"
             tools:text="@string/sw_4_desc" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_24"
-            app:hintTextAppearance="@style/TextAppearance.MovieHound.HintText">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/comment_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_medium"
-                android:hint="@string/comment"
-                android:textColor="?android:attr/textColorSecondary"
-                android:theme="@style/Widget.MovieHound.EditText" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

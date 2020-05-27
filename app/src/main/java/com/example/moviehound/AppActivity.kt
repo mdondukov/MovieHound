@@ -165,10 +165,8 @@ class AppActivity : AppCompatActivity(),
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun setMovieResult(item: Movie, favorites: ArrayList<Movie>) {
+    override fun setMovieResult(favorites: ArrayList<Movie>) {
         favorites.let { favoriteList = favorites }
-        val index: Int = movieList.indexOf(item)
-        item.let { movieList.set(index, it) }
     }
 
     override fun onBackPressed() {

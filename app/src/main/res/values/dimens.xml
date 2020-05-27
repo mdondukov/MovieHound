@@ -5,7 +5,6 @@
     <dimen name="card_corners_radius">4dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="ic_size">24dp</dimen>
-    <dimen name="cover_detail_height">320dp</dimen>
     <!--  Margin & Padding  -->
     <dimen name="space_4">4dp</dimen>
     <dimen name="space_8">8dp</dimen>

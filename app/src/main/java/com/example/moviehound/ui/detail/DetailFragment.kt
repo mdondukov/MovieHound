@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
-import com.google.android.material.textfield.TextInputEditText
 
 class DetailFragment : Fragment() {
     private lateinit var movie: Movie
@@ -30,7 +29,6 @@ class DetailFragment : Fragment() {
     private lateinit var overviewTv: TextView
     private lateinit var favoriteIv: ImageView
     private lateinit var inviteIv: ImageView
-    private lateinit var commentEt: TextInputEditText
     private var listener: OnMovieChanged? = null
 
     override fun onCreateView(
@@ -93,7 +91,6 @@ class DetailFragment : Fragment() {
         overviewTv = view.findViewById(R.id.overview_tv)
         favoriteIv = view.findViewById(R.id.favorite_iv)
         inviteIv = view.findViewById(R.id.invite_iv)
-        commentEt = view.findViewById(R.id.comment_et)
     }
 
     private fun setData() {
@@ -107,7 +104,6 @@ class DetailFragment : Fragment() {
         titleTv.text = movie.title
         originalTitleTv.text = movie.originalTitle
         overviewTv.text = movie.overview
-        commentEt.setText(movie.comment)
 
         if (movie.tagline.isNotEmpty()) taglineTv.text = movie.tagline
         else taglineTv.visibility = View.GONE
@@ -147,13 +143,7 @@ class DetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        saveComment()
-        listener?.setMovieResult(movie, favoriteList)
-    }
-
-    private fun saveComment() {
-        val comment = commentEt.text.toString()
-        movie.comment = comment
+        listener?.setMovieResult(favoriteList)
     }
 
     companion object {
@@ -168,6 +158,6 @@ class DetailFragment : Fragment() {
     }
 
     interface OnMovieChanged {
-        fun setMovieResult(item: Movie, favorites: ArrayList<Movie>)
+        fun setMovieResult(favorites: ArrayList<Movie>)
     }
 }

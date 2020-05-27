@@ -1,35 +1,21 @@
 package com.example.moviehound.data
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Movie(
-    val id: Int,
-    val posterResId: Int,
-    val backdropResId: Int,
-    val title: String,
-    val originalTitle: String,
-    val tagline: String,
-    val genres: ArrayList<String>,
-    val overview: String,
-    val releaseDate: String,
-    val productionCountries: ArrayList<String>,
-    val runtime: Int,
-    var comment: String
-) : Parcelable {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Movie
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id
-    }
-}
+    @SerializedName("id") val id: Long,
+    @SerializedName("poster_path") val poster: String,
+    @SerializedName("backdrop_path") val backdrop: String,
+    @SerializedName("title") val title: String,
+    @SerializedName("original_title") val originalTitle: String,
+    @SerializedName("tagline") val tagline: String,
+    @SerializedName("genres") val genres: List<Genre>,
+    @SerializedName("overview") val overview: String,
+    @SerializedName("vote_average") val rating: Float,
+    @SerializedName("release_date") val releaseDate: String,
+    @SerializedName("production_countries") val productionCountries: ArrayList<ProductionCountry>,
+    @SerializedName("runtime") val runtime: Int
+) : Parcelable
