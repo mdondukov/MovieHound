@@ -3,7 +3,7 @@
     <string name="sw_4_title" translatable="false">Звездные Войны Эпизод IV: Новая Надежда</string>
     <string name="sw_4_desc" translatable="false">Для далекой-далекой Галактики настали трудные времена. Миром правит тираническая Империя. Чистых сердцем, наделенных Силой джедаев, которые борются со злом и несправедливостью, почти не осталось. И все же есть те, кто осмеливается противостоять вселенской диктатуре и жестокости: повстанцев немного, но они сильны духом, сильны надеждой.</string>
     <string name="details">Детали</string>
-    <string name="share">Пригласить друга</string>
+    <string name="share">Поделиться</string>
     <string name="description">Описание</string>
     <string name="comment">Комментарий</string>
     <string name="hint_message">Введите текст</string>
@@ -12,7 +12,19 @@
     <string name="exit_dialog_title">Уже уходите?</string>
     <string name="exit_positive">Да, выйти</string>
     <string name="exit_negative">Отмена</string>
-    <string name="settings">Сменить тему</string>
+    <string name="settings">Настройки</string>
     <string name="favorite">Избранное</string>
     <string name="home">Главная</string>
+    <string name="nav_header_title" translatable="false">MovieHound</string>
+    <string name="nav_header_subtitle" translatable="false">imdb.com</string>
+    <string name="open">Открыть</string>
+    <string name="close">Закрыть</string>
+    <string name="switch_theme">Сменить тему</string>
+    <string name="search">Поиск</string>
+    <string name="about_movie">Информация о фильме</string>
+    <string name="cancel">Отмена</string>
+    <string name="favorite_remove">Фильм удален из \"Избранного\". %1$s сек.</string>
+    <string name="trailer">Трейлер</string>
+    <string name="poster">Постер</string>
+    <string name="metainfo">%1$s, %2$s, %3$d мин.</string>
 </resources>

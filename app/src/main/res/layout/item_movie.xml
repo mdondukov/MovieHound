@@ -2,57 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/movie_layout"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="@dimen/card_elevation">
+        app:cardCornerRadius="@dimen/card_corners_radius">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/cover_image_view"
-                style="@style/Widget.MovieHound.ImageView"
-                android:layout_height="@dimen/cover_main_height"
+                android:id="@+id/poster_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/img_sw_4" />
 
             <LinearLayout
-                style="@style/Widget.MovieHound.LinearLayout.Blackout"
-                android:layout_gravity="top|end">
+                style="@style/Widget.MovieHound.LinearLayout.Transparent"
+                android:layout_gravity="top|end"
+                android:background="@drawable/button_overlay_bg">
 
                 <ImageView
-                    android:id="@+id/favorite_image_view"
+                    android:id="@+id/favorite_iv"
                     style="@style/Widget.MovieHound.Icon"
-                    android:onClick="onFavoriteClick"
                     android:src="@drawable/ic_favorite_check"
                     tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
-            <LinearLayout style="@style/Widget.MovieHound.LinearLayout.Gradient">
-
-                <TextView
-                    android:id="@+id/title_text_view"
-                    style="@style/Widget.MovieHound.TextView.Title"
-                    android:textColor="?android:attr/textColorPrimaryInverse"
-                    tools:text="@string/sw_4_title" />
-
-                <Button
-                    android:id="@+id/detail_button"
-                    style="@style/Widget.MovieHound.Button"
-                    android:text="@string/details" />
 
             </LinearLayout>
 
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_marginBottom="@dimen/space_4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:singleLine="true"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="@string/sw_4_title" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4" />
+    </LinearLayout>
 
 </LinearLayout>
