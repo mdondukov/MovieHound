@@ -11,9 +11,9 @@ import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 
 class MovieListAdapter(
     private val inflater: LayoutInflater,
-    private var movieList: ArrayList<Movie>,
+    private var movieList: MutableList<Movie>,
     private var favoriteList: ArrayList<Movie>,
-    private val listener: (movie: Movie) -> Unit
+    private val listener: (itemId: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieViewHolder(
@@ -53,7 +53,7 @@ class MovieListAdapter(
             }
 
             holder.itemView.findViewById<View>(R.id.movie_layout)
-                .setOnClickListener { listener.invoke(item) }
+                .setOnClickListener { listener.invoke(item.id) }
         }
     }
 
@@ -66,5 +66,13 @@ class MovieListAdapter(
 
     private fun setFavoriteStatus(view: View, status: Boolean) {
         view.isSelected = status
+    }
+
+    fun appendMovies(movies: List<Movie>) {
+        this.movieList.addAll(movies)
+        notifyItemRangeInserted(
+            this.movieList.size,
+            movies.size - 1
+        )
     }
 }

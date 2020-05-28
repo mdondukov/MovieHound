@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
+import com.example.moviehound.data.Repository
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 
 class MovieListFragment : Fragment() {
-    private lateinit var movieList: ArrayList<Movie>
     private lateinit var favoriteList: ArrayList<Movie>
+    private lateinit var recycler: RecyclerView
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
     private var listener: OnMovieListClickListener? = null
+    private var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,28 +37,25 @@ class MovieListFragment : Fragment() {
         (activity as AppActivity).setSupportActionBar(toolbar)
 
         setData()
-
-        val recycler = view.findViewById<RecyclerView>(R.id.movie_list)
-        initRecycler(recycler)
+        initRecycler(view)
     }
 
     private fun setData() {
         arguments?.let {
-            movieList =
-                it.getParcelableArrayList<Movie>(AppActivity.MOVIE_LIST) as ArrayList<Movie>
             favoriteList =
                 it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
     }
 
-    private fun initRecycler(recycler: RecyclerView) {
+    private fun initRecycler(view: View) {
         val gridColumnCount: Int = resources.getInteger(R.integer.grid_column_count)
-        val layoutManager = GridLayoutManager(context, gridColumnCount)
+        recycler = view.findViewById(R.id.movie_list)
+        layoutManager = GridLayoutManager(context, gridColumnCount)
         recycler.layoutManager = layoutManager
 
         adapter = MovieListAdapter(
             LayoutInflater.from(context),
-            movieList,
+            mutableListOf(),
             favoriteList
         ) { listener?.onMovieClick(it) }
 
@@ -64,6 +65,41 @@ class MovieListFragment : Fragment() {
                 resources.getDimension(R.dimen.space_4).toInt()
             )
         )
+
+        getMovies()
+    }
+
+    private fun getMovies() {
+        Repository.getMovies(
+            page,
+            onSuccess = ::onMoviesFetched,
+            onError = ::onError
+        )
+    }
+
+    private fun onMoviesFetched(movies: List<Movie>) {
+        adapter.appendMovies(movies)
+        attachLatestMoviesOnScrollListener()
+    }
+
+    private fun onError() {
+        Toast.makeText(context, getString(R.string.error_fetch_movies), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun attachLatestMoviesOnScrollListener() {
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val totalItemCount = layoutManager.itemCount
+                val visibleItemCount = layoutManager.childCount
+                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
+                    recycler.removeOnScrollListener(this)
+                    page++
+                    getMovies()
+                }
+            }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -72,10 +108,9 @@ class MovieListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(movies: ArrayList<Movie>, favorites: ArrayList<Movie>): MovieListFragment {
+        fun newInstance(favorites: ArrayList<Movie>): MovieListFragment {
             val fragment = MovieListFragment()
             val bundle = Bundle()
-            bundle.putParcelableArrayList(AppActivity.MOVIE_LIST, movies)
             bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
             fragment.arguments = bundle
             return fragment

@@ -52,7 +52,7 @@ class FavoriteListFragment : Fragment() {
         adapter = FavoriteListAdapter(
             LayoutInflater.from(context),
             favoriteList
-        ) { listener?.onMovieClick(it) }
+        ) { listener?.onMovieClick(it.id) }
 
         recycler.adapter = adapter
         recycler.addItemDecoration(

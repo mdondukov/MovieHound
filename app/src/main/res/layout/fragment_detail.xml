@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/backdrop_iv"
-                style="@style/Widget.MovieHound.ImageView"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:contentDescription="@string/poster"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"

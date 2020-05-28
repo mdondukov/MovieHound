@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.moviehound.data.Movie
-import com.example.moviehound.data.Storage
 import com.example.moviehound.ui.detail.DetailFragment
 import com.example.moviehound.ui.favorites.FavoriteListFragment
 import com.example.moviehound.ui.global.OnMovieListClickListener
@@ -24,7 +23,6 @@ class AppActivity : AppCompatActivity(),
     OnMovieListClickListener,
     DetailFragment.OnMovieChanged {
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var movieList: ArrayList<Movie>
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var navView: BottomNavigationView
 
@@ -54,13 +52,9 @@ class AppActivity : AppCompatActivity(),
     }
 
     private fun initData(savedInstanceState: Bundle?) {
-        movieList = ArrayList()
-        movieList = Storage.init()
         favoriteList = ArrayList()
 
         if (savedInstanceState != null) {
-            movieList =
-                savedInstanceState.getParcelableArrayList<Movie>(MOVIE_LIST) as ArrayList<Movie>
             favoriteList =
                 savedInstanceState.getParcelableArrayList<Movie>(FAVORITE_LIST) as ArrayList<Movie>
         }
@@ -110,14 +104,13 @@ class AppActivity : AppCompatActivity(),
         } else {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.container, MovieListFragment.newInstance(movieList, favoriteList))
+                .replace(R.id.container, MovieListFragment.newInstance(favoriteList))
                 .commit()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(MOVIE_LIST, movieList)
         outState.putParcelableArrayList(FAVORITE_LIST, favoriteList)
     }
 
@@ -160,8 +153,8 @@ class AppActivity : AppCompatActivity(),
         editor.apply()
     }
 
-    override fun onMovieClick(item: Movie) {
-        doFragment(DetailFragment.newInstance(item, favoriteList))
+    override fun onMovieClick(itemId: Int) {
+        doFragment(DetailFragment.newInstance(itemId, favoriteList))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -196,5 +189,6 @@ class AppActivity : AppCompatActivity(),
         const val FAVORITE_LIST = "favorites"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
+        const val API_KEY = "2b2917453d5b58d5a9796598046553b1"
     }
 }

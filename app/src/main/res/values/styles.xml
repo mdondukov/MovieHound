@@ -25,21 +25,12 @@
 
     <style name="Widget.MovieHound.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="TextAppearance.MovieHound.BottomNavigationView" parent="">
-        <item name="fontFamily">@font/montserrat_medium</item>
-    </style>
-
-    <style name="Widget.MovieHound.ImageView" parent="">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:scaleType">centerCrop</item>
-    </style>
-
     <style name="Widget.MovieHound.LinearLayout.Transparent" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingTop">@dimen/space_8</item>
-        <item name="android:paddingBottom">@dimen/space_8</item>
+        <item name="android:paddingTop">@dimen/space_12</item>
+        <item name="android:paddingBottom">@dimen/space_12</item>
         <item name="android:paddingStart">@dimen/space_4</item>
         <item name="android:paddingEnd">@dimen/space_4</item>
     </style>
@@ -52,7 +43,6 @@
     <style name="Widget.MovieHound.TextView.Large" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
         <item name="android:textSize">@dimen/title</item>
     </style>
 

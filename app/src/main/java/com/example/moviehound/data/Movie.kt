@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Movie(
-    @SerializedName("id") val id: Long,
+    @SerializedName("id") val id: Int,
     @SerializedName("poster_path") val poster: String,
     @SerializedName("backdrop_path") val backdrop: String,
     @SerializedName("title") val title: String,
@@ -15,6 +15,7 @@ data class Movie(
     @SerializedName("genres") val genres: List<Genre>,
     @SerializedName("overview") val overview: String,
     @SerializedName("vote_average") val rating: Float,
+    @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("production_countries") val productionCountries: ArrayList<ProductionCountry>,
     @SerializedName("runtime") val runtime: Int
