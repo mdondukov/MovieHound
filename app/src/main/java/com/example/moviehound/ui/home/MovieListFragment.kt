@@ -17,6 +17,7 @@ import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 
 class MovieListFragment : Fragment() {
+    private lateinit var movieList: ArrayList<Movie>
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var recycler: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
@@ -36,12 +37,23 @@ class MovieListFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
 
+        movieList = ArrayList()
+
         setData()
         initRecycler(view)
     }
 
     private fun setData() {
         arguments?.let {
+            if (it.containsKey(AppActivity.MOVIE_LIST)) {
+                movieList =
+                    it.getParcelableArrayList<Movie>(AppActivity.MOVIE_LIST) as ArrayList<Movie>
+            }
+
+            if (it.containsKey(AppActivity.CURRENT_PAGE)) {
+                page = it.getInt(AppActivity.CURRENT_PAGE)
+            }
+
             favoriteList =
                 it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
@@ -66,7 +78,12 @@ class MovieListFragment : Fragment() {
             )
         )
 
-        getMovies()
+        if (movieList.isEmpty())
+            getMovies()
+        else {
+            adapter.appendMovies(movieList)
+            attachLatestMoviesOnScrollListener()
+        }
     }
 
     private fun getMovies() {
@@ -105,6 +122,14 @@ class MovieListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity is OnMovieListClickListener) listener = activity as OnMovieListClickListener
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this.arguments?.apply {
+            putParcelableArrayList(AppActivity.MOVIE_LIST, (adapter.getMovies() as ArrayList))
+            putInt(AppActivity.CURRENT_PAGE, page)
+        }
     }
 
     companion object {

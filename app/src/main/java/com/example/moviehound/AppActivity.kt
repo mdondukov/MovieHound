@@ -187,6 +187,7 @@ class AppActivity : AppCompatActivity(),
     companion object {
         const val MOVIE_LIST = "movies"
         const val FAVORITE_LIST = "favorites"
+        const val CURRENT_PAGE = "current_page"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
         const val API_KEY = "2b2917453d5b58d5a9796598046553b1"

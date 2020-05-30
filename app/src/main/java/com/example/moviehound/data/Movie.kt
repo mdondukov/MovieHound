@@ -19,4 +19,19 @@ data class Movie(
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("production_countries") val productionCountries: ArrayList<ProductionCountry>,
     @SerializedName("runtime") val runtime: Int
-) : Parcelable
+) : Parcelable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Movie
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+}

@@ -75,4 +75,6 @@ class MovieListAdapter(
             movies.size - 1
         )
     }
+
+    fun getMovies() : List<Movie> = movieList
 }
