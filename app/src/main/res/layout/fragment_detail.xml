@@ -46,4 +46,19 @@
 
     <include layout="@layout/content_detail" />
 
+    <FrameLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="?android:attr/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

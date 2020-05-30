@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -16,11 +15,13 @@ import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
 import com.example.moviehound.data.Repository
+import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
     private lateinit var movie: Movie
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
+    private lateinit var progress: View
     private lateinit var posterIv: ImageView
     private lateinit var backdropIv: ImageView
     private lateinit var titleTv: TextView
@@ -57,12 +58,15 @@ class DetailFragment : Fragment() {
 
         Repository.getMovie(
             movieId,
-            onSuccess = { item -> setData(item) },
+            onSuccess = { item ->
+                progress.visibility = View.GONE
+                setData(item)
+            },
             onError = {
-                Toast.makeText(
-                    context,
+                Snackbar.make(
+                    this.requireView(),
                     getString(R.string.error_fetch_movies),
-                    Toast.LENGTH_SHORT
+                    Snackbar.LENGTH_INDEFINITE
                 ).show()
             }
         )
@@ -91,6 +95,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
+        progress = view.findViewById(R.id.progress_layout)
         toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppActivity).apply {
             setSupportActionBar(toolbar)

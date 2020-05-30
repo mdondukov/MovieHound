@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +14,7 @@ import com.example.moviehound.data.Movie
 import com.example.moviehound.data.Repository
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
+import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : Fragment() {
     private lateinit var movieList: ArrayList<Movie>
@@ -22,6 +22,7 @@ class MovieListFragment : Fragment() {
     private lateinit var recycler: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
+    private lateinit var progress: View
     private var listener: OnMovieListClickListener? = null
     private var page = 1
 
@@ -38,6 +39,7 @@ class MovieListFragment : Fragment() {
         (activity as AppActivity).setSupportActionBar(toolbar)
 
         movieList = ArrayList()
+        progress = view.findViewById(R.id.progress_bar)
 
         setData()
         initRecycler(view)
@@ -81,6 +83,7 @@ class MovieListFragment : Fragment() {
         if (movieList.isEmpty())
             getMovies()
         else {
+            progress.visibility = View.GONE
             adapter.appendMovies(movieList)
             attachLatestMoviesOnScrollListener()
         }
@@ -95,12 +98,17 @@ class MovieListFragment : Fragment() {
     }
 
     private fun onMoviesFetched(movies: List<Movie>) {
+        progress.visibility = View.GONE
         adapter.appendMovies(movies)
         attachLatestMoviesOnScrollListener()
     }
 
     private fun onError() {
-        Toast.makeText(context, getString(R.string.error_fetch_movies), Toast.LENGTH_SHORT).show()
+        Snackbar.make(
+            this.requireView(),
+            getString(R.string.error_fetch_movies),
+            Snackbar.LENGTH_INDEFINITE
+        ).show()
     }
 
     private fun attachLatestMoviesOnScrollListener() {
