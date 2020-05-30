@@ -14,6 +14,7 @@ data class Movie(
     @SerializedName("tagline") val tagline: String,
     @SerializedName("genres") val genres: List<Genre>,
     @SerializedName("overview") val overview: String,
+    @SerializedName("video") val video: Boolean,
     @SerializedName("vote_average") val rating: Float,
     @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("release_date") val releaseDate: String,

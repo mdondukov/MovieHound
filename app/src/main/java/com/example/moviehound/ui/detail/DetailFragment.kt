@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -32,8 +33,10 @@ class DetailFragment : Fragment() {
     private lateinit var ratingTv: TextView
     private lateinit var voteCountTv: TextView
     private lateinit var overviewTv: TextView
+    private lateinit var trailerLl: LinearLayout
+    private lateinit var favoriteLl: LinearLayout
+    private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-    private lateinit var inviteIv: ImageView
 
     private var movieId: Int = 0
     private var listener: OnMovieChanged? = null
@@ -73,17 +76,17 @@ class DetailFragment : Fragment() {
 
         toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
 
-        favoriteIv.setOnClickListener {
-            if (it.isSelected) {
-                setFavoriteStatus(it, false)
+        favoriteLl.setOnClickListener {
+            if (favoriteIv.isSelected) {
+                setFavoriteStatus(favoriteIv, false)
                 favoriteList.remove(movie)
             } else {
-                setFavoriteStatus(it, true)
+                setFavoriteStatus(favoriteIv, true)
                 favoriteList.add(movie)
             }
         }
 
-        inviteIv.setOnClickListener {
+        inviteLl.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
             intent.putExtra(
@@ -114,8 +117,10 @@ class DetailFragment : Fragment() {
         ratingTv = view.findViewById(R.id.rating_tv)
         voteCountTv = view.findViewById(R.id.vote_count_tv)
         overviewTv = view.findViewById(R.id.overview_tv)
+        trailerLl = view.findViewById(R.id.trailer_layout)
+        favoriteLl = view.findViewById(R.id.favorite_layout)
         favoriteIv = view.findViewById(R.id.favorite_iv)
-        inviteIv = view.findViewById(R.id.invite_iv)
+        inviteLl = view.findViewById(R.id.invite_layout)
     }
 
     private fun setData(item: Movie) {

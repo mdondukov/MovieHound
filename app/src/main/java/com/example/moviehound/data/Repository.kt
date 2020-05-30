@@ -85,6 +85,7 @@ object Repository {
                                 responseBody.tagline,
                                 responseBody.genres,
                                 responseBody.overview,
+                                responseBody.video,
                                 responseBody.rating,
                                 responseBody.voteCount,
                                 responseBody.releaseDate,
