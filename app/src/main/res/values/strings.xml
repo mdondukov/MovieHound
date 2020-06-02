@@ -16,15 +16,16 @@
     <string name="favorite">Избранное</string>
     <string name="home">Главная</string>
     <string name="nav_header_title" translatable="false">MovieHound</string>
-    <string name="nav_header_subtitle" translatable="false">imdb.com</string>
     <string name="open">Открыть</string>
     <string name="close">Закрыть</string>
     <string name="switch_theme">Сменить тему</string>
     <string name="search">Поиск</string>
-    <string name="about_movie">Информация о фильме</string>
     <string name="cancel">Отмена</string>
     <string name="favorite_remove">Фильм удален из \"Избранного\". %1$s сек.</string>
     <string name="trailer">Трейлер</string>
     <string name="poster">Постер</string>
     <string name="metainfo">%1$s, %2$s, %3$d мин.</string>
+    <string name="about_movie">Информация о фильме</string>
+    <string name="error_fetch_movies">Пожалуйста, проверьте Ваше интернет-соединение</string>
+    <string name="vote_count">%1$d оценок</string>
 </resources>

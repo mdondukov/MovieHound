@@ -6,19 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RatingBar
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
-import com.google.android.material.textfield.TextInputEditText
+import com.example.moviehound.data.Repository
+import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
     private lateinit var movie: Movie
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
+    private lateinit var progress: View
     private lateinit var posterIv: ImageView
     private lateinit var backdropIv: ImageView
     private lateinit var titleTv: TextView
@@ -26,11 +30,15 @@ class DetailFragment : Fragment() {
     private lateinit var taglineTv: TextView
     private lateinit var genresTv: TextView
     private lateinit var metainfoTv: TextView
-    private lateinit var ratingBar: RatingBar
+    private lateinit var ratingTv: TextView
+    private lateinit var voteCountTv: TextView
     private lateinit var overviewTv: TextView
+    private lateinit var trailerLl: LinearLayout
+    private lateinit var favoriteLl: LinearLayout
+    private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-    private lateinit var inviteIv: ImageView
-    private lateinit var commentEt: TextInputEditText
+
+    private var movieId: Int = 0
     private var listener: OnMovieChanged? = null
 
     override fun onCreateView(
@@ -46,23 +54,39 @@ class DetailFragment : Fragment() {
             requireContext().resources.getColor(R.color.black_20)
 
         initViews(view)
-        setData()
 
-        toolbar.setNavigationOnClickListener {
-            fragmentManager?.popBackStack()
+        arguments?.let {
+            movieId = it.getInt(Movie::class.java.simpleName)
         }
 
-        favoriteIv.setOnClickListener {
-            if (it.isSelected) {
-                setFavoriteStatus(it, false)
+        Repository.getMovie(
+            movieId,
+            onSuccess = { item ->
+                progress.visibility = View.GONE
+                setData(item)
+            },
+            onError = {
+                Snackbar.make(
+                    this.requireView(),
+                    getString(R.string.error_fetch_movies),
+                    Snackbar.LENGTH_INDEFINITE
+                ).show()
+            }
+        )
+
+        toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
+
+        favoriteLl.setOnClickListener {
+            if (favoriteIv.isSelected) {
+                setFavoriteStatus(favoriteIv, false)
                 favoriteList.remove(movie)
             } else {
-                setFavoriteStatus(it, true)
+                setFavoriteStatus(favoriteIv, true)
                 favoriteList.add(movie)
             }
         }
 
-        inviteIv.setOnClickListener {
+        inviteLl.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
             intent.putExtra(
@@ -74,6 +98,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
+        progress = view.findViewById(R.id.progress_layout)
         toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppActivity).apply {
             setSupportActionBar(toolbar)
@@ -89,37 +114,53 @@ class DetailFragment : Fragment() {
         taglineTv = view.findViewById(R.id.tagline_tv)
         genresTv = view.findViewById(R.id.genres_tv)
         metainfoTv = view.findViewById(R.id.metainfo_tv)
-        ratingBar = view.findViewById(R.id.rating_bar)
+        ratingTv = view.findViewById(R.id.rating_tv)
+        voteCountTv = view.findViewById(R.id.vote_count_tv)
         overviewTv = view.findViewById(R.id.overview_tv)
+        trailerLl = view.findViewById(R.id.trailer_layout)
+        favoriteLl = view.findViewById(R.id.favorite_layout)
         favoriteIv = view.findViewById(R.id.favorite_iv)
-        inviteIv = view.findViewById(R.id.invite_iv)
-        commentEt = view.findViewById(R.id.comment_et)
+        inviteLl = view.findViewById(R.id.invite_layout)
     }
 
-    private fun setData() {
+    private fun setData(item: Movie) {
+        movie = item
         arguments?.let {
-            movie = it.getParcelable<Movie>(Movie::class.java.simpleName) as Movie
             favoriteList =
                 it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
         }
-        posterIv.setImageResource(movie.posterResId)
-        backdropIv.setImageResource(movie.backdropResId)
+
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w342${movie.poster}")
+            .transform(CenterCrop())
+            .into(posterIv)
+
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w1280${movie.backdrop}")
+            .transform(CenterCrop())
+            .into(backdropIv)
+
         titleTv.text = movie.title
         originalTitleTv.text = movie.originalTitle
         overviewTv.text = movie.overview
-        commentEt.setText(movie.comment)
 
-        if (movie.tagline.isNotEmpty()) taglineTv.text = movie.tagline
-        else taglineTv.visibility = View.GONE
+        if (movie.tagline.isEmpty())
+            taglineTv.visibility = View.GONE
+        else
+            taglineTv.text = movie.tagline
 
-        genresTv.text = movie.genres.joinToString(", ")
+        genresTv.text =
+            (movie.genres.flatMap { listOf(it.name) }).joinToString(", ")
 
         metainfoTv.text = context?.resources?.getString(
             R.string.metainfo,
-            movie.releaseDate,
-            movie.productionCountries.joinToString(", "),
+            (movie.releaseDate).substring(0, 4),
+            (movie.productionCountries.flatMap { listOf(it.name) }).joinToString(", "),
             movie.runtime
         )
+
+        ratingTv.text = movie.rating.toString()
+        voteCountTv.text = context?.resources?.getString(R.string.vote_count, movie.voteCount)
 
         if (favoriteList.size != 0) {
             val itemExists: Boolean = checkAvailability(favoriteList, movie)
@@ -147,20 +188,14 @@ class DetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        saveComment()
-        listener?.setMovieResult(movie, favoriteList)
-    }
-
-    private fun saveComment() {
-        val comment = commentEt.text.toString()
-        movie.comment = comment
+        listener?.setMovieResult(favoriteList)
     }
 
     companion object {
-        fun newInstance(item: Movie, favorites: ArrayList<Movie>): DetailFragment {
+        fun newInstance(itemId: Int, favorites: ArrayList<Movie>): DetailFragment {
             val fragment = DetailFragment()
             val bundle = Bundle()
-            bundle.putParcelable(Movie::class.java.simpleName, item)
+            bundle.putInt(Movie::class.java.simpleName, itemId)
             bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
             fragment.arguments = bundle
             return fragment
@@ -168,6 +203,6 @@ class DetailFragment : Fragment() {
     }
 
     interface OnMovieChanged {
-        fun setMovieResult(item: Movie, favorites: ArrayList<Movie>)
+        fun setMovieResult(favorites: ArrayList<Movie>)
     }
 }
