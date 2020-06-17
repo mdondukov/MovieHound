@@ -8,13 +8,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 import com.google.android.material.snackbar.Snackbar
 
 class FavoriteListAdapter(
     private val inflater: LayoutInflater,
+    private val sharedViewModel: SharedViewModel,
     private var favoriteList: ArrayList<Movie>,
-    private val listener: (movie: Movie) -> Unit
+    private val listener: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieViewHolder(
@@ -47,7 +49,10 @@ class FavoriteListAdapter(
             }
 
             holder.itemView.findViewById<View>(R.id.movie_layout)
-                .setOnClickListener { listener(item) }
+                .setOnClickListener {
+                    sharedViewModel.select(item.id)
+                    listener.invoke()
+                }
         }
     }
 

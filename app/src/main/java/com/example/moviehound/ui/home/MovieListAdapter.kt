@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 
 class MovieListAdapter(
     private val inflater: LayoutInflater,
+    private val sharedViewModel: SharedViewModel,
     private var favoriteList: ArrayList<Movie>,
-    private val listener: (itemId: Int) -> Unit
+    private val listener: () -> Unit
 ) : PagedListAdapter<Movie, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,7 +57,10 @@ class MovieListAdapter(
                 }
 
                 holder.itemView.findViewById<View>(R.id.movie_layout)
-                    .setOnClickListener { listener.invoke(item.id) }
+                    .setOnClickListener {
+                        sharedViewModel.select(item.id)
+                        listener.invoke()
+                    }
             }
         }
     }

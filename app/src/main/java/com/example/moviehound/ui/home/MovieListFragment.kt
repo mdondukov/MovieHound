@@ -15,12 +15,14 @@ import com.example.moviehound.R
 import com.example.moviehound.api.State
 import com.example.moviehound.data.Movie
 import com.example.moviehound.ui.global.OnMovieListClickListener
+import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : Fragment() {
+    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var movieListViewModel: MovieListViewModel
     private lateinit var favoriteList: ArrayList<Movie>
-    private lateinit var viewModel: MovieListViewModel
     private lateinit var recycler: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
@@ -39,7 +41,8 @@ class MovieListFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        movieListViewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
         progress = view.findViewById(R.id.progress_bar)
 
         setData()
@@ -62,8 +65,11 @@ class MovieListFragment : Fragment() {
 
         adapter = MovieListAdapter(
             LayoutInflater.from(context),
+            sharedViewModel,
             favoriteList
-        ) { listener?.onMovieClick(it) }
+        ) {
+            listener?.onMovieClick()
+        }
 
         recycler.adapter = adapter
         recycler.addItemDecoration(
@@ -72,18 +78,18 @@ class MovieListFragment : Fragment() {
             )
         )
 
-        viewModel.movieList.observe(
+        movieListViewModel.movieList.observe(
             this.viewLifecycleOwner,
             Observer { adapter.submitList(it) }
         )
     }
 
     private fun initState() {
-        viewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
+        movieListViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
             progress.visibility =
-                if (viewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE
+                if (movieListViewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE
                 else View.GONE
-            if (viewModel.listIsEmpty() && state == State.ERROR) {
+            if (movieListViewModel.listIsEmpty() && state == State.ERROR) {
                 showErrorSnackBar()
             }
         })

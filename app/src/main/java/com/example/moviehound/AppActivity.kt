@@ -155,8 +155,8 @@ class AppActivity : AppCompatActivity(),
         editor.apply()
     }
 
-    override fun onMovieClick(itemId: Int) {
-        doFragment(DetailFragment.newInstance(itemId, favoriteList))
+    override fun onMovieClick() {
+        doFragment(DetailFragment.newInstance(favoriteList))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
 import com.example.moviehound.ui.global.OnMovieListClickListener
+import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 
 class FavoriteListFragment : Fragment() {
+    private lateinit var sharedViewModel: SharedViewModel
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var adapter: FavoriteListAdapter
     private var listener: OnMovieListClickListener? = null
@@ -30,6 +33,8 @@ class FavoriteListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         setData()
 
@@ -51,8 +56,9 @@ class FavoriteListFragment : Fragment() {
 
         adapter = FavoriteListAdapter(
             LayoutInflater.from(context),
+            sharedViewModel,
             favoriteList
-        ) { listener?.onMovieClick(it.id) }
+        ) { listener?.onMovieClick() }
 
         recycler.adapter = adapter
         recycler.addItemDecoration(
