@@ -1,4 +1,4 @@
-package com.example.moviehound.ui.global
+package com.example.moviehound.api
 
 import com.example.moviehound.data.Movie
 import com.example.moviehound.data.Movies
@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface Api {
+interface NetworkService {
     @GET("discover/movie")
     fun getMovies(
         @Query("api_key") apiKey: String,

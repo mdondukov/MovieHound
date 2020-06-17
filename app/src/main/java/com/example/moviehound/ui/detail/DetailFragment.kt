@@ -10,15 +10,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
+import com.example.moviehound.api.State
 import com.example.moviehound.data.Movie
-import com.example.moviehound.data.Repository
 import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
+    private lateinit var viewModel: DetailViewModel
     private lateinit var movie: Movie
     private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
@@ -54,25 +57,15 @@ class DetailFragment : Fragment() {
             requireContext().resources.getColor(R.color.black_20)
 
         initViews(view)
+        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        viewModel.movie.observe(this.viewLifecycleOwner, Observer { setData(it) })
+        initState()
 
         arguments?.let {
             movieId = it.getInt(Movie::class.java.simpleName)
         }
 
-        Repository.getMovie(
-            movieId,
-            onSuccess = { item ->
-                progress.visibility = View.GONE
-                setData(item)
-            },
-            onError = {
-                Snackbar.make(
-                    this.requireView(),
-                    getString(R.string.error_fetch_movies),
-                    Snackbar.LENGTH_INDEFINITE
-                ).show()
-            }
-        )
+        viewModel.getMovie(movieId)
 
         toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
 
@@ -179,6 +172,19 @@ class DetailFragment : Fragment() {
 
     private fun setFavoriteStatus(view: View, status: Boolean) {
         view.isSelected = status
+    }
+
+    private fun initState() {
+        viewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
+            progress.visibility = if (state == State.LOADING) View.VISIBLE else View.GONE
+            if (state == State.ERROR) showErrorSnackBar()
+        })
+    }
+
+    private fun showErrorSnackBar() {
+        viewModel.error.observe(this.viewLifecycleOwner, Observer {
+            Snackbar.make(this.requireView(), it, Snackbar.LENGTH_INDEFINITE).show()
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

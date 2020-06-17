@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
 import com.example.moviehound.data.Movie
@@ -11,10 +13,10 @@ import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 
 class MovieListAdapter(
     private val inflater: LayoutInflater,
-    private var movieList: MutableList<Movie>,
     private var favoriteList: ArrayList<Movie>,
     private val listener: (itemId: Int) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : PagedListAdapter<Movie, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieViewHolder(
             inflater.inflate(
@@ -25,41 +27,42 @@ class MovieListAdapter(
         )
     }
 
-    override fun getItemCount() = movieList.size
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MovieViewHolder) {
-            val item = movieList[position]
-            holder.bind(item)
+            val item = getItem(position)
 
-            val favoriteImageView: ImageView =
-                holder.itemView.findViewById(R.id.favorite_iv)
+            if (item != null) {
+                holder.bind(item)
 
-            if (favoriteList.size != 0) {
-                val itemExists: Boolean = checkAvailability(favoriteList, item)
-                if (itemExists) setFavoriteStatus(favoriteImageView, true)
-                else setFavoriteStatus(favoriteImageView, false)
+                val favoriteImageView: ImageView =
+                    holder.itemView.findViewById(R.id.favorite_iv)
 
-            } else setFavoriteStatus(favoriteImageView, false)
+                if (favoriteList.isNotEmpty()) {
+                    val itemExists: Boolean = checkAvailability(favoriteList, item)
+                    if (itemExists) setFavoriteStatus(favoriteImageView, true)
+                    else setFavoriteStatus(favoriteImageView, false)
 
-            favoriteImageView.setOnClickListener {
-                if (it.isSelected) {
-                    setFavoriteStatus(it, false)
-                    favoriteList.remove(item)
-                } else {
-                    setFavoriteStatus(it, true)
-                    favoriteList.add(item)
+                } else setFavoriteStatus(favoriteImageView, false)
+
+                favoriteImageView.setOnClickListener {
+                    if (it.isSelected) {
+                        setFavoriteStatus(it, false)
+                        favoriteList.remove(item)
+                    } else {
+                        setFavoriteStatus(it, true)
+                        favoriteList.add(item)
+                    }
                 }
-            }
 
-            holder.itemView.findViewById<View>(R.id.movie_layout)
-                .setOnClickListener { listener.invoke(item.id) }
+                holder.itemView.findViewById<View>(R.id.movie_layout)
+                    .setOnClickListener { listener.invoke(item.id) }
+            }
         }
     }
 
     private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
         for (movie: Movie in favorites) {
-            if (movie == item) return true
+            if (movie.id == item.id) return true
         }
         return false
     }
@@ -68,13 +71,11 @@ class MovieListAdapter(
         view.isSelected = status
     }
 
-    fun appendMovies(movies: List<Movie>) {
-        this.movieList.addAll(movies)
-        notifyItemRangeInserted(
-            this.movieList.size,
-            movies.size - 1
-        )
-    }
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) = oldItem.id == newItem.id
 
-    fun getMovies() : List<Movie> = movieList
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) = oldItem == newItem
+        }
+    }
 }

@@ -34,7 +34,7 @@ class AppActivity : AppCompatActivity(),
 
         initData(savedInstanceState)
         initBottomNavigation()
-        setStartFragment()
+        setStartFragment(savedInstanceState)
 
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.fragments.last() !is DetailFragment) {
@@ -96,16 +96,18 @@ class AppActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setStartFragment() {
+    private fun setStartFragment(savedInstanceState: Bundle?) {
         if (supportFragmentManager.backStackEntryCount > 0) {
             if (supportFragmentManager.fragments.last() is DetailFragment) {
                 supportFragmentManager.fragments.last()
             }
         } else {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, MovieListFragment.newInstance(favoriteList))
-                .commit()
+            if (savedInstanceState == null) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container, MovieListFragment.newInstance(favoriteList))
+                    .commit()
+            }
         }
     }
 
@@ -185,9 +187,7 @@ class AppActivity : AppCompatActivity(),
     }
 
     companion object {
-        const val MOVIE_LIST = "movies"
         const val FAVORITE_LIST = "favorites"
-        const val CURRENT_PAGE = "current_page"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
         const val API_KEY = "2b2917453d5b58d5a9796598046553b1"
