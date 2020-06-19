@@ -22,11 +22,11 @@ import com.google.android.material.snackbar.Snackbar
 class MovieListFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var movieListViewModel: MovieListViewModel
-    private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var recycler: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
     private lateinit var progress: View
+    private val favoriteList = ArrayList<Movie>()
     private var listener: OnMovieListClickListener? = null
 
     override fun onCreateView(
@@ -45,16 +45,13 @@ class MovieListFragment : Fragment() {
         movieListViewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
         progress = view.findViewById(R.id.progress_bar)
 
-        setData()
+        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
+            favoriteList.clear()
+            favoriteList.addAll(it)
+        })
+
         initRecycler(view)
         initState()
-    }
-
-    private fun setData() {
-        arguments?.let {
-            favoriteList =
-                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
-        }
     }
 
     private fun initRecycler(view: View) {
@@ -106,15 +103,5 @@ class MovieListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity is OnMovieListClickListener) listener = activity as OnMovieListClickListener
-    }
-
-    companion object {
-        fun newInstance(favorites: ArrayList<Movie>): MovieListFragment {
-            val fragment = MovieListFragment()
-            val bundle = Bundle()
-            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
-            fragment.arguments = bundle
-            return fragment
-        }
     }
 }

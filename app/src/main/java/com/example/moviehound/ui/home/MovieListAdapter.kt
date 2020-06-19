@@ -49,16 +49,16 @@ class MovieListAdapter(
                 favoriteImageView.setOnClickListener {
                     if (it.isSelected) {
                         setFavoriteStatus(it, false)
-                        favoriteList.remove(item)
+                        sharedViewModel.removeFavoriteMovie(item)
                     } else {
                         setFavoriteStatus(it, true)
-                        favoriteList.add(item)
+                        sharedViewModel.addFavoriteMovie(item)
                     }
                 }
 
                 holder.itemView.findViewById<View>(R.id.movie_layout)
                     .setOnClickListener {
-                        sharedViewModel.select(item.id)
+                        sharedViewModel.selectId(item.id)
                         listener.invoke()
                     }
             }

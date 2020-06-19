@@ -25,7 +25,6 @@ class DetailFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var movie: Movie
-    private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
     private lateinit var progress: View
     private lateinit var posterIv: ImageView
@@ -42,8 +41,7 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteLl: LinearLayout
     private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-
-    private var listener: OnMovieChanged? = null
+    private val favoriteList = ArrayList<Movie>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,12 +58,17 @@ class DetailFragment : Fragment() {
         initViews(view)
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        sharedViewModel.selected.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.selectedId.observe(viewLifecycleOwner, Observer {
             detailViewModel.getMovie(it)
         })
 
+        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
+            favoriteList.clear()
+            favoriteList.addAll(it)
+        })
+
         detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        detailViewModel.movie.observe(this.viewLifecycleOwner, Observer { setData(it) })
+        detailViewModel.movie.observe(viewLifecycleOwner, Observer { setData(it) })
 
         initState()
 
@@ -74,10 +77,10 @@ class DetailFragment : Fragment() {
         favoriteLl.setOnClickListener {
             if (favoriteIv.isSelected) {
                 setFavoriteStatus(favoriteIv, false)
-                favoriteList.remove(movie)
+                sharedViewModel.removeFavoriteMovie(movie)
             } else {
                 setFavoriteStatus(favoriteIv, true)
-                favoriteList.add(movie)
+                sharedViewModel.addFavoriteMovie(movie)
             }
         }
 
@@ -120,10 +123,6 @@ class DetailFragment : Fragment() {
 
     private fun setData(item: Movie) {
         movie = item
-        arguments?.let {
-            favoriteList =
-                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
-        }
 
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w342${movie.poster}")
@@ -187,29 +186,5 @@ class DetailFragment : Fragment() {
         detailViewModel.error.observe(this.viewLifecycleOwner, Observer {
             Snackbar.make(this.requireView(), it, Snackbar.LENGTH_INDEFINITE).show()
         })
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (activity is OnMovieChanged) listener = activity as OnMovieChanged
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        listener?.setMovieResult(favoriteList)
-    }
-
-    companion object {
-        fun newInstance(favorites: ArrayList<Movie>): DetailFragment {
-            val fragment = DetailFragment()
-            val bundle = Bundle()
-            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
-    interface OnMovieChanged {
-        fun setMovieResult(favorites: ArrayList<Movie>)
     }
 }

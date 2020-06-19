@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
-import com.example.moviehound.data.Movie
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 
 class FavoriteListFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
-    private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var adapter: FavoriteListAdapter
     private var listener: OnMovieListClickListener? = null
 
@@ -36,17 +35,8 @@ class FavoriteListFragment : Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        setData()
-
         val recycler = view.findViewById<RecyclerView>(R.id.favorite_movie_list)
         initRecycler(recycler)
-    }
-
-    private fun setData() {
-        arguments?.let {
-            favoriteList =
-                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
-        }
     }
 
     private fun initRecycler(recycler: RecyclerView) {
@@ -56,8 +46,7 @@ class FavoriteListFragment : Fragment() {
 
         adapter = FavoriteListAdapter(
             LayoutInflater.from(context),
-            sharedViewModel,
-            favoriteList
+            sharedViewModel
         ) { listener?.onMovieClick() }
 
         recycler.adapter = adapter
@@ -66,20 +55,14 @@ class FavoriteListFragment : Fragment() {
                 resources.getDimension(R.dimen.space_4).toInt()
             )
         )
+
+        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity is OnMovieListClickListener) listener = activity as OnMovieListClickListener
-    }
-
-    companion object {
-        fun newInstance(favorites: ArrayList<Movie>): FavoriteListFragment {
-            val fragment = FavoriteListFragment()
-            val bundle = Bundle()
-            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
-            fragment.arguments = bundle
-            return fragment
-        }
     }
 }
