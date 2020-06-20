@@ -47,8 +47,7 @@ class MovieUseCase(
                 }
 
                 override fun onFailure(call: Call<Movie>, t: Throwable) {
-                    callback.onError(t.message.toString())
-                    updateState(State.ERROR)
+                    updateState(State.FAIL)
                 }
             })
     }
@@ -59,6 +58,5 @@ class MovieUseCase(
 
     interface GetMovieCallback {
         fun onSuccess(item: Movie)
-        fun onError(error: String)
     }
 }

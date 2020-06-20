@@ -86,18 +86,16 @@ class MovieListFragment : Fragment() {
             progress.visibility =
                 if (movieListViewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE
                 else View.GONE
-            if (movieListViewModel.listIsEmpty() && state == State.ERROR) {
-                showErrorSnackBar()
-            }
+            if (movieListViewModel.listIsEmpty() && state == State.ERROR)
+                showErrorSnackBar(resources.getString(R.string.server_error))
+            if (movieListViewModel.listIsEmpty() && state == State.FAIL)
+                showErrorSnackBar(resources.getString(R.string.internet_fail))
         })
     }
 
-    private fun showErrorSnackBar() {
-        Snackbar.make(
-            this.requireView(),
-            resources.getString(R.string.error_fetch_movies),
-            Snackbar.LENGTH_INDEFINITE
-        ).show()
+    private fun showErrorSnackBar(msg: String) {
+        Snackbar.make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

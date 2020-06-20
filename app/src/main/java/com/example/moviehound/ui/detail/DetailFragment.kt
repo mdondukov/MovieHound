@@ -26,6 +26,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var movie: Movie
     private lateinit var toolbar: Toolbar
+    private lateinit var overlay: View
     private lateinit var progress: View
     private lateinit var posterIv: ImageView
     private lateinit var backdropIv: ImageView
@@ -96,7 +97,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        progress = view.findViewById(R.id.progress_layout)
+        overlay = view.findViewById(R.id.overlay)
+        progress = view.findViewById(R.id.progress_bar)
         toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppActivity).apply {
             setSupportActionBar(toolbar)
@@ -176,15 +178,32 @@ class DetailFragment : Fragment() {
     }
 
     private fun initState() {
-        detailViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
-            progress.visibility = if (state == State.LOADING) View.VISIBLE else View.GONE
-            if (state == State.ERROR) showErrorSnackBar()
+        detailViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer {
+            when (it) {
+                State.LOADING -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.VISIBLE
+                }
+                State.DONE -> {
+                    overlay.visibility = View.GONE
+                }
+                State.ERROR -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                    showErrorSnackBar(resources.getString(R.string.server_error))
+                }
+                State.FAIL -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                    showErrorSnackBar(resources.getString(R.string.internet_fail))
+                }
+                else -> overlay.visibility = View.GONE
+            }
         })
     }
 
-    private fun showErrorSnackBar() {
-        detailViewModel.error.observe(this.viewLifecycleOwner, Observer {
-            Snackbar.make(this.requireView(), it, Snackbar.LENGTH_INDEFINITE).show()
-        })
+    private fun showErrorSnackBar(msg: String) {
+        Snackbar.make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .show()
     }
 }

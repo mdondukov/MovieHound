@@ -46,7 +46,7 @@ class MovieListDataSource(
                     retry = {
                         loadInitial(params, callback)
                     }
-                    updateState(State.ERROR)
+                    updateState(State.FAIL)
                 }
             })
     }
@@ -74,7 +74,7 @@ class MovieListDataSource(
                     retry = {
                         loadAfter(params, callback)
                     }
-                    updateState(State.ERROR)
+                    updateState(State.FAIL)
                 }
             })
     }

@@ -26,6 +26,7 @@
     <string name="poster">Постер</string>
     <string name="metainfo">%1$s, %2$s, %3$d мин.</string>
     <string name="about_movie">Информация о фильме</string>
-    <string name="error_fetch_movies">Пожалуйста, проверьте Ваше интернет-соединение</string>
+    <string name="server_error">Ошибка сервера!</string>
     <string name="vote_count">%1$d оценок</string>
+    <string name="internet_fail">Отсутствует интернет!</string>
 </resources>
