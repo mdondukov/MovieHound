@@ -43,6 +43,7 @@ class DetailFragment : Fragment() {
     private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
     private val favoriteList = ArrayList<Movie>()
+    private var movieId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +61,8 @@ class DetailFragment : Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         sharedViewModel.selectedId.observe(viewLifecycleOwner, Observer {
-            detailViewModel.getMovie(it)
+            movieId = it
+            detailViewModel.getMovie(movieId)
         })
 
         sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
@@ -203,7 +205,11 @@ class DetailFragment : Fragment() {
     }
 
     private fun showErrorSnackBar(msg: String) {
-        Snackbar.make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+        Snackbar
+            .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .setAction(getString(R.string.retry)) {
+                detailViewModel.getMovie(movieId)
+            }
             .show()
     }
 }

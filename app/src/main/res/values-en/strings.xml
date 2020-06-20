@@ -26,4 +26,5 @@
     <string name="server_error">Server error!</string>
     <string name="vote_count">%1$d votes</string>
     <string name="internet_fail">No internet!</string>
+    <string name="retry">Retry</string>
 </resources>
