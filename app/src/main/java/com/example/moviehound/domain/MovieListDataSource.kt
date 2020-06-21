@@ -20,6 +20,16 @@ class MovieListDataSource(
     val state = MutableLiveData<State>()
     private var retry: (() -> Any)? = null
 
+    fun retryAllFailed() {
+        val prevRetry = retry
+        retry = null
+        prevRetry?.let {
+            retryExecutor.execute {
+                it.invoke()
+            }
+        }
+    }
+
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Movie>

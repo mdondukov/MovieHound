@@ -43,5 +43,9 @@ class MovieListViewModel : ViewModel() {
     fun listIsEmpty(): Boolean {
         return movieList.value?.isEmpty() ?: true
     }
+
+    fun retry() {
+        dataSourceFactory.sourceLiveData.value?.retryAllFailed()
+    }
 }
 

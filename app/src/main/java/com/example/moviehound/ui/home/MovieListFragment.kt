@@ -94,7 +94,11 @@ class MovieListFragment : Fragment() {
     }
 
     private fun showErrorSnackBar(msg: String) {
-        Snackbar.make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+        Snackbar
+            .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .setAction(getString(R.string.retry)) {
+                movieListViewModel.retry()
+            }
             .show()
     }
 
