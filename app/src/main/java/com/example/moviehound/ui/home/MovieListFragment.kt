@@ -14,6 +14,7 @@ import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.api.State
 import com.example.moviehound.data.Movie
+import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
@@ -41,8 +42,12 @@ class MovieListFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        movieListViewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
+            .get(SharedViewModel::class.java)
+
+        movieListViewModel = ViewModelProvider(this, MainViewModelFactory())
+            .get(MovieListViewModel::class.java)
+
         progress = view.findViewById(R.id.progress_bar)
 
         sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
