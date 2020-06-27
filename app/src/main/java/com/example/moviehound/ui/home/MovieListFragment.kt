@@ -6,25 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
+import com.example.moviehound.api.State
 import com.example.moviehound.data.Movie
-import com.example.moviehound.data.Repository
+import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
+import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : Fragment() {
-    private lateinit var movieList: ArrayList<Movie>
-    private lateinit var favoriteList: ArrayList<Movie>
+    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var movieListViewModel: MovieListViewModel
     private lateinit var recycler: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
     private lateinit var progress: View
+    private val favoriteList = ArrayList<Movie>()
     private var listener: OnMovieListClickListener? = null
-    private var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,27 +42,21 @@ class MovieListFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
 
-        movieList = ArrayList()
+        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
+            .get(SharedViewModel::class.java)
+
+        movieListViewModel = ViewModelProvider(this, MainViewModelFactory())
+            .get(MovieListViewModel::class.java)
+
         progress = view.findViewById(R.id.progress_bar)
 
-        setData()
+        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
+            favoriteList.clear()
+            favoriteList.addAll(it)
+        })
+
         initRecycler(view)
-    }
-
-    private fun setData() {
-        arguments?.let {
-            if (it.containsKey(AppActivity.MOVIE_LIST)) {
-                movieList =
-                    it.getParcelableArrayList<Movie>(AppActivity.MOVIE_LIST) as ArrayList<Movie>
-            }
-
-            if (it.containsKey(AppActivity.CURRENT_PAGE)) {
-                page = it.getInt(AppActivity.CURRENT_PAGE)
-            }
-
-            favoriteList =
-                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
-        }
+        initState()
     }
 
     private fun initRecycler(view: View) {
@@ -69,9 +67,11 @@ class MovieListFragment : Fragment() {
 
         adapter = MovieListAdapter(
             LayoutInflater.from(context),
-            mutableListOf(),
+            sharedViewModel,
             favoriteList
-        ) { listener?.onMovieClick(it) }
+        ) {
+            listener?.onMovieClick()
+        }
 
         recycler.adapter = adapter
         recycler.addItemDecoration(
@@ -80,73 +80,35 @@ class MovieListFragment : Fragment() {
             )
         )
 
-        if (movieList.isEmpty())
-            getMovies()
-        else {
-            progress.visibility = View.GONE
-            adapter.appendMovies(movieList)
-            attachLatestMoviesOnScrollListener()
-        }
-    }
-
-    private fun getMovies() {
-        Repository.getMovies(
-            page,
-            onSuccess = ::onMoviesFetched,
-            onError = ::onError
+        movieListViewModel.movieList.observe(
+            this.viewLifecycleOwner,
+            Observer { adapter.submitList(it) }
         )
     }
 
-    private fun onMoviesFetched(movies: List<Movie>) {
-        progress.visibility = View.GONE
-        adapter.appendMovies(movies)
-        attachLatestMoviesOnScrollListener()
-    }
-
-    private fun onError() {
-        Snackbar.make(
-            this.requireView(),
-            getString(R.string.error_fetch_movies),
-            Snackbar.LENGTH_INDEFINITE
-        ).show()
-    }
-
-    private fun attachLatestMoviesOnScrollListener() {
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-
-                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
-                    recycler.removeOnScrollListener(this)
-                    page++
-                    getMovies()
-                }
-            }
+    private fun initState() {
+        movieListViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
+            progress.visibility =
+                if (movieListViewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE
+                else View.GONE
+            if (movieListViewModel.listIsEmpty() && state == State.ERROR)
+                showErrorSnackBar(resources.getString(R.string.server_error))
+            if (movieListViewModel.listIsEmpty() && state == State.FAIL)
+                showErrorSnackBar(resources.getString(R.string.internet_fail))
         })
+    }
+
+    private fun showErrorSnackBar(msg: String) {
+        Snackbar
+            .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .setAction(getString(R.string.retry)) {
+                movieListViewModel.retry()
+            }
+            .show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity is OnMovieListClickListener) listener = activity as OnMovieListClickListener
-    }
-
-    override fun onStop() {
-        super.onStop()
-        this.arguments?.apply {
-            putParcelableArrayList(AppActivity.MOVIE_LIST, (adapter.getMovies() as ArrayList))
-            putInt(AppActivity.CURRENT_PAGE, page)
-        }
-    }
-
-    companion object {
-        fun newInstance(favorites: ArrayList<Movie>): MovieListFragment {
-            val fragment = MovieListFragment()
-            val bundle = Bundle()
-            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
-            fragment.arguments = bundle
-            return fragment
-        }
     }
 }

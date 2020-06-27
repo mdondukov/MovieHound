@@ -28,11 +28,18 @@ data class Movie(
         other as Movie
 
         if (id != other.id) return false
+        if (poster != other.poster) return false
+        if (title != other.title) return false
+        if (rating != other.rating) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return id
+        var result = id
+        result = 31 * result + poster.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + rating.hashCode()
+        return result
     }
 }

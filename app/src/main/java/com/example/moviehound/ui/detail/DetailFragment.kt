@@ -10,18 +10,24 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
+import com.example.moviehound.api.State
 import com.example.moviehound.data.Movie
-import com.example.moviehound.data.Repository
+import com.example.moviehound.ui.global.MainViewModelFactory
+import com.example.moviehound.ui.global.SharedViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
+    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var detailViewModel: DetailViewModel
     private lateinit var movie: Movie
-    private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var toolbar: Toolbar
+    private lateinit var overlay: View
     private lateinit var progress: View
     private lateinit var posterIv: ImageView
     private lateinit var backdropIv: ImageView
@@ -37,9 +43,8 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteLl: LinearLayout
     private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-
-    private var movieId: Int = 0
-    private var listener: OnMovieChanged? = null
+    private val favoriteList = ArrayList<Movie>()
+    private var movieId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,34 +60,35 @@ class DetailFragment : Fragment() {
 
         initViews(view)
 
-        arguments?.let {
-            movieId = it.getInt(Movie::class.java.simpleName)
-        }
+        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
+            .get(SharedViewModel::class.java)
 
-        Repository.getMovie(
-            movieId,
-            onSuccess = { item ->
-                progress.visibility = View.GONE
-                setData(item)
-            },
-            onError = {
-                Snackbar.make(
-                    this.requireView(),
-                    getString(R.string.error_fetch_movies),
-                    Snackbar.LENGTH_INDEFINITE
-                ).show()
-            }
-        )
+        sharedViewModel.selectedId.observe(viewLifecycleOwner, Observer {
+            movieId = it
+            detailViewModel.getMovie(movieId)
+        })
+
+        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
+            favoriteList.clear()
+            favoriteList.addAll(it)
+        })
+
+        detailViewModel = ViewModelProvider(this, MainViewModelFactory())
+            .get(DetailViewModel::class.java)
+
+        detailViewModel.movie.observe(viewLifecycleOwner, Observer { setData(it) })
+
+        initState()
 
         toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
 
         favoriteLl.setOnClickListener {
             if (favoriteIv.isSelected) {
                 setFavoriteStatus(favoriteIv, false)
-                favoriteList.remove(movie)
+                sharedViewModel.removeFavoriteMovie(movie)
             } else {
                 setFavoriteStatus(favoriteIv, true)
-                favoriteList.add(movie)
+                sharedViewModel.addFavoriteMovie(movie)
             }
         }
 
@@ -98,7 +104,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        progress = view.findViewById(R.id.progress_layout)
+        overlay = view.findViewById(R.id.overlay)
+        progress = view.findViewById(R.id.progress_bar)
         toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppActivity).apply {
             setSupportActionBar(toolbar)
@@ -125,10 +132,6 @@ class DetailFragment : Fragment() {
 
     private fun setData(item: Movie) {
         movie = item
-        arguments?.let {
-            favoriteList =
-                it.getParcelableArrayList<Movie>(AppActivity.FAVORITE_LIST) as ArrayList<Movie>
-        }
 
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w342${movie.poster}")
@@ -172,7 +175,7 @@ class DetailFragment : Fragment() {
 
     private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
         for (movie: Movie in favorites) {
-            if (movie == item) return true
+            if (movie.id == item.id) return true
         }
         return false
     }
@@ -181,28 +184,37 @@ class DetailFragment : Fragment() {
         view.isSelected = status
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (activity is OnMovieChanged) listener = activity as OnMovieChanged
+    private fun initState() {
+        detailViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer {
+            when (it) {
+                State.LOADING -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.VISIBLE
+                }
+                State.DONE -> {
+                    overlay.visibility = View.GONE
+                }
+                State.ERROR -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                    showErrorSnackBar(resources.getString(R.string.server_error))
+                }
+                State.FAIL -> {
+                    overlay.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                    showErrorSnackBar(resources.getString(R.string.internet_fail))
+                }
+                else -> overlay.visibility = View.GONE
+            }
+        })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        listener?.setMovieResult(favoriteList)
-    }
-
-    companion object {
-        fun newInstance(itemId: Int, favorites: ArrayList<Movie>): DetailFragment {
-            val fragment = DetailFragment()
-            val bundle = Bundle()
-            bundle.putInt(Movie::class.java.simpleName, itemId)
-            bundle.putParcelableArrayList(AppActivity.FAVORITE_LIST, favorites)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
-    interface OnMovieChanged {
-        fun setMovieResult(favorites: ArrayList<Movie>)
+    private fun showErrorSnackBar(msg: String) {
+        Snackbar
+            .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
+            .setAction(getString(R.string.retry)) {
+                detailViewModel.getMovie(movieId)
+            }
+            .show()
     }
 }

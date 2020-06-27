@@ -10,7 +10,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.moviehound.data.Movie
 import com.example.moviehound.ui.detail.DetailFragment
 import com.example.moviehound.ui.favorites.FavoriteListFragment
 import com.example.moviehound.ui.global.OnMovieListClickListener
@@ -20,10 +19,8 @@ import com.example.moviehound.util.ThemeChanger
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AppActivity : AppCompatActivity(),
-    OnMovieListClickListener,
-    DetailFragment.OnMovieChanged {
+    OnMovieListClickListener {
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var favoriteList: ArrayList<Movie>
     private lateinit var navView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +29,8 @@ class AppActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app)
 
-        initData(savedInstanceState)
         initBottomNavigation()
-        setStartFragment()
+        setStartFragment(savedInstanceState)
 
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.fragments.last() !is DetailFragment) {
@@ -48,15 +44,6 @@ class AppActivity : AppCompatActivity(),
                     }
                 }
             }
-        }
-    }
-
-    private fun initData(savedInstanceState: Bundle?) {
-        favoriteList = ArrayList()
-
-        if (savedInstanceState != null) {
-            favoriteList =
-                savedInstanceState.getParcelableArrayList<Movie>(FAVORITE_LIST) as ArrayList<Movie>
         }
     }
 
@@ -75,7 +62,7 @@ class AppActivity : AppCompatActivity(),
                 }
                 R.id.navigation_favorite -> {
                     if (currentFragment !is FavoriteListFragment)
-                        doFragment(FavoriteListFragment.newInstance(favoriteList))
+                        doFragment(FavoriteListFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navigation_search -> {
@@ -96,22 +83,19 @@ class AppActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setStartFragment() {
+    private fun setStartFragment(savedInstanceState: Bundle?) {
         if (supportFragmentManager.backStackEntryCount > 0) {
             if (supportFragmentManager.fragments.last() is DetailFragment) {
                 supportFragmentManager.fragments.last()
             }
         } else {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, MovieListFragment.newInstance(favoriteList))
-                .commit()
+            if (savedInstanceState == null) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container, MovieListFragment())
+                    .commit()
+            }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(FAVORITE_LIST, favoriteList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -153,13 +137,9 @@ class AppActivity : AppCompatActivity(),
         editor.apply()
     }
 
-    override fun onMovieClick(itemId: Int) {
-        doFragment(DetailFragment.newInstance(itemId, favoriteList))
+    override fun onMovieClick() {
+        doFragment(DetailFragment())
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun setMovieResult(favorites: ArrayList<Movie>) {
-        favorites.let { favoriteList = favorites }
     }
 
     override fun onBackPressed() {
@@ -185,9 +165,6 @@ class AppActivity : AppCompatActivity(),
     }
 
     companion object {
-        const val MOVIE_LIST = "movies"
-        const val FAVORITE_LIST = "favorites"
-        const val CURRENT_PAGE = "current_page"
         const val APP_PREFERENCES = "settings"
         const val APP_CURRENT_THEME = "current_theme"
         const val API_KEY = "2b2917453d5b58d5a9796598046553b1"
