@@ -17,7 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.api.State
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.SharedViewModel
 import com.google.android.material.snackbar.Snackbar

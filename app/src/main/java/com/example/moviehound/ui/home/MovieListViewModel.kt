@@ -7,9 +7,9 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviehound.api.ServiceGenerator
 import com.example.moviehound.api.State
-import com.example.moviehound.data.Movie
-import com.example.moviehound.domain.MovieListDataSource
-import com.example.moviehound.domain.MovieListDataSourceFactory
+import com.example.moviehound.data.MovieListDataSource
+import com.example.moviehound.data.MovieListDataSourceFactory
+import com.example.moviehound.model.Movie
 import java.util.concurrent.Executors
 
 class MovieListViewModel : ViewModel() {

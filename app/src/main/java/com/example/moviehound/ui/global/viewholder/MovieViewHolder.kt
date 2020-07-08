@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.R
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val posterIv: ImageView = itemView.findViewById(R.id.poster_iv)

@@ -1,10 +1,10 @@
-package com.example.moviehound.domain
+package com.example.moviehound.data
 
 import androidx.lifecycle.MutableLiveData
 import com.example.moviehound.AppActivity
 import com.example.moviehound.api.NetworkService
 import com.example.moviehound.api.State
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

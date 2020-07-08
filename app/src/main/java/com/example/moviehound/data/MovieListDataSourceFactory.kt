@@ -1,9 +1,9 @@
-package com.example.moviehound.domain
+package com.example.moviehound.data
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.example.moviehound.api.NetworkService
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 import java.util.concurrent.Executor
 
 class MovieListDataSourceFactory(

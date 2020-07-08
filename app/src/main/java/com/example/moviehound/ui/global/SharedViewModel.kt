@@ -3,7 +3,7 @@ package com.example.moviehound.ui.global
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 
 class SharedViewModel: ViewModel() {
     private val selectedIdLiveData = MutableLiveData<Int>()

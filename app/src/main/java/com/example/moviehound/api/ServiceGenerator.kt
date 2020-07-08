@@ -1,7 +1,7 @@
 package com.example.moviehound.api
 
 import com.example.moviehound.BuildConfig
-import com.example.moviehound.domain.MovieUseCase
+import com.example.moviehound.data.MovieUseCase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

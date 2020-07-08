@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moviehound.api.ServiceGenerator
 import com.example.moviehound.api.State
-import com.example.moviehound.data.Movie
-import com.example.moviehound.domain.MovieUseCase
+import com.example.moviehound.data.MovieUseCase
+import com.example.moviehound.model.Movie
 
 class DetailViewModel : ViewModel() {
     private val movieUseCase = ServiceGenerator.movieUseCase

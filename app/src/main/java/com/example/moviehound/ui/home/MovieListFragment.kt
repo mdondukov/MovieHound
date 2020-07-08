@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
 import com.example.moviehound.R
 import com.example.moviehound.api.State
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel

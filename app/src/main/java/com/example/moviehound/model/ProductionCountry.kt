@@ -1,4 +1,4 @@
-package com.example.moviehound.data
+package com.example.moviehound.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

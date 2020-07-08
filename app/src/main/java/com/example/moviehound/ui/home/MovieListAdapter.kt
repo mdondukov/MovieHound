@@ -8,7 +8,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
-import com.example.moviehound.data.Movie
+import com.example.moviehound.model.Movie
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 

@@ -1,7 +1,7 @@
 package com.example.moviehound.api
 
-import com.example.moviehound.data.Movie
-import com.example.moviehound.data.Movies
+import com.example.moviehound.model.Movie
+import com.example.moviehound.model.Movies
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

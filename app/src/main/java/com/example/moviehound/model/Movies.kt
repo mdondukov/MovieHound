@@ -1,6 +1,5 @@
-package com.example.moviehound.data
+package com.example.moviehound.model
 
-import com.example.moviehound.data.Movie
 import com.google.gson.annotations.SerializedName
 
 data class Movies(
