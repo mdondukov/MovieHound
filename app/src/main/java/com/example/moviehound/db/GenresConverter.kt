@@ -7,8 +7,12 @@ import com.google.gson.reflect.TypeToken
 
 class GenresConverter {
     @TypeConverter
-    fun fromGenreListToJson(stat: List<Genre>): String {
-        return Gson().toJson(stat)
+    fun fromGenreListToJson(genres: List<Genre>?): String {
+        var data = ""
+        if (genres != null) {
+            data = Gson().toJson(genres)
+        }
+        return data
     }
 
     @TypeConverter

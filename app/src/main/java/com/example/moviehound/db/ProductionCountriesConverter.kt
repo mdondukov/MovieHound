@@ -7,8 +7,12 @@ import com.google.gson.reflect.TypeToken
 
 class ProductionCountriesConverter {
     @TypeConverter
-    fun fromImagesJson(stat: List<ProductionCountry>): String {
-        return Gson().toJson(stat)
+    fun fromImagesJson(countries: List<ProductionCountry>?): String {
+        var data = ""
+        if (countries != null) {
+            data = Gson().toJson(countries)
+        }
+        return data
     }
 
     @TypeConverter

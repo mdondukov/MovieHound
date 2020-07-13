@@ -22,9 +22,10 @@
     <string name="favorite_remove">The movie removed from \"Favorites\". %1$s s.</string>
     <string name="trailer">Trailer</string>
     <string name="poster">Poster</string>
-    <string name="metainfo">%1$s, %2$s, %3$d min.</string>
+    <string name="country_and_runtime">%1$s, %2$d min.</string>
     <string name="server_error">Server error!</string>
     <string name="vote_count">%1$d votes</string>
     <string name="internet_fail">No internet!</string>
     <string name="retry">Retry</string>
+    <string name="country_budget_runtime">%1$s, %2$d m, %3$d min.</string>
 </resources>

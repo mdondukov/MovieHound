@@ -22,7 +22,7 @@
             tools:text="@string/sw_4_title" />
 
         <TextView
-            android:id="@+id/tagline_tv"
+            android:id="@+id/original_title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_4"
@@ -152,31 +152,16 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/original_title_tv"
+                    android:id="@+id/title_and_release_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Star Wars Episode I: A New Hope" />
-
-                <TextView
-                    android:id="@+id/genres_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_4"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Боевик, Фантастика, Приключения" />
-
-                <TextView
-                    android:id="@+id/metainfo_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_4"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="1977, США, 139 мин." />
+                    tools:text="Звездные Войны Эпизод IV: Новая Надежда (1977)" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_4"
                     android:orientation="horizontal">
 
                     <TextView
@@ -193,11 +178,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/space_8"
-                        android:textColor="?android:attr/textColorPrimary"
                         android:text="@string/vote_count"
-                        tools:text="4166 оценок"/>
+                        android:textColor="?android:attr/textColorPrimary"
+                        tools:text="4166 оценок" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/genres_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_4"
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Боевик, Фантастика, Приключения" />
+
+                <TextView
+                    android:id="@+id/country_budget_runtime_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_4"
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="США, $250,000,000, 139 мин." />
 
             </LinearLayout>
 
@@ -209,8 +210,8 @@
             android:layout_marginTop="@dimen/space_24"
             android:layout_marginBottom="@dimen/space_8"
             android:text="@string/about_movie"
-            android:textSize="@dimen/large"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/large" />
 
         <TextView
             android:id="@+id/overview_tv"

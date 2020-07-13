@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
+import com.example.moviehound.Injection
 import com.example.moviehound.R
-import com.example.moviehound.api.State
-import com.example.moviehound.model.Movie
+import com.example.moviehound.api.NetworkState
+import com.example.moviehound.api.Status
+import com.example.moviehound.model.MovieModel
 import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel
@@ -27,7 +29,7 @@ class MovieListFragment : Fragment() {
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
     private lateinit var progress: View
-    private val favoriteList = ArrayList<Movie>()
+    private val favoriteList = ArrayList<MovieModel>()
     private var listener: OnMovieListClickListener? = null
 
     override fun onCreateView(
@@ -45,8 +47,9 @@ class MovieListFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
             .get(SharedViewModel::class.java)
 
-        movieListViewModel = ViewModelProvider(this, MainViewModelFactory())
-            .get(MovieListViewModel::class.java)
+        movieListViewModel =
+            ViewModelProvider(this, Injection.provideMovieViewModelFactory(context!!))
+                .get(MovieListViewModel::class.java)
 
         progress = view.findViewById(R.id.progress_bar)
 
@@ -87,23 +90,20 @@ class MovieListFragment : Fragment() {
     }
 
     private fun initState() {
-        movieListViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
+        movieListViewModel.networkState.observe(this.viewLifecycleOwner, Observer { state ->
             progress.visibility =
-                if (movieListViewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE
+                if (movieListViewModel.listIsEmpty() && state == NetworkState.LOADING) View.VISIBLE
                 else View.GONE
-            if (movieListViewModel.listIsEmpty() && state == State.ERROR)
-                showErrorSnackBar(resources.getString(R.string.server_error))
-            if (movieListViewModel.listIsEmpty() && state == State.FAIL)
-                showErrorSnackBar(resources.getString(R.string.internet_fail))
+
+            if (movieListViewModel.listIsEmpty() && state?.status == Status.FAILED)
+                state.msg?.let { showErrorSnackBar(it) }
         })
     }
 
     private fun showErrorSnackBar(msg: String) {
         Snackbar
             .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.retry)) {
-                movieListViewModel.retry()
-            }
+            .setAction(getString(R.string.retry)) { movieListViewModel.retry() }
             .show()
     }
 

@@ -1,26 +1,27 @@
 package com.example.moviehound.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
-import com.example.moviehound.model.Movie
+import com.example.moviehound.model.MovieModel
 
 @Dao
 interface MovieDao {
-    @Query("SELECT * FROM movies")
-    fun getMovies(): LiveData<List<Movie>>
+    @Query("SELECT * FROM movies ORDER BY popularity DESC, voteCount Desc")
+    fun getMovies(): DataSource.Factory<Int, MovieModel>
+
+    @Query("SELECT * FROM movies WHERE is_favorite = 1")
+    fun getFavorites(): LiveData<List<MovieModel>>
+
+    @Query("SELECT * FROM movies WHERE id = :id")
+    fun getMovie(id: Int): LiveData<MovieModel>
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun update(movie: MovieModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(items: List<Movie>)
+    fun insert(items: List<MovieModel>)
 
     @Query("DELETE FROM movies")
-    fun deleteAll()
-
-    @Query("SELECT * FROM movies WHERE id=:id")
-    fun getMovie(id: Int): LiveData<Movie>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: Movie)
-
-    @Delete
-    fun delete(item: Movie)
+    fun delete()
 }

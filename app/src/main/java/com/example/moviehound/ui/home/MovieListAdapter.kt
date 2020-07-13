@@ -8,16 +8,16 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
-import com.example.moviehound.model.Movie
+import com.example.moviehound.model.MovieModel
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 
 class MovieListAdapter(
     private val inflater: LayoutInflater,
     private val sharedViewModel: SharedViewModel,
-    private var favoriteList: ArrayList<Movie>,
+    private var favoriteList: ArrayList<MovieModel>,
     private val listener: () -> Unit
-) : PagedListAdapter<Movie, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+) : PagedListAdapter<MovieModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieViewHolder(
@@ -58,15 +58,15 @@ class MovieListAdapter(
 
                 holder.itemView.findViewById<View>(R.id.movie_layout)
                     .setOnClickListener {
-                        sharedViewModel.selectId(item.id)
+                        sharedViewModel.selectMovie(item)
                         listener.invoke()
                     }
             }
         }
     }
 
-    private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
-        for (movie: Movie in favorites) {
+    private fun checkAvailability(favorites: ArrayList<MovieModel>, item: MovieModel): Boolean {
+        for (movie: MovieModel in favorites) {
             if (movie.id == item.id) return true
         }
         return false
@@ -77,10 +77,10 @@ class MovieListAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) = oldItem.id == newItem.id
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieModel>() {
+            override fun areItemsTheSame(oldItem: MovieModel, newItem: MovieModel) = oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: MovieModel, newItem: MovieModel) = oldItem == newItem
         }
     }
 }

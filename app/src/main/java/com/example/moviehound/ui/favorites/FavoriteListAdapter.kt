@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.R
-import com.example.moviehound.model.Movie
+import com.example.moviehound.model.MovieModel
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 import com.google.android.material.snackbar.Snackbar
@@ -53,18 +53,18 @@ class FavoriteListAdapter(
 
             holder.itemView.findViewById<View>(R.id.movie_layout)
                 .setOnClickListener {
-                    sharedViewModel.selectId(item.id)
+                    sharedViewModel.selectMovie(item)
                     listener.invoke()
                 }
         }
     }
 
-    fun submitList(movies: List<Movie>) = differ.submitList(movies)
+    fun submitList(movies: List<MovieModel>) = differ.submitList(movies)
 
     private fun getFavoriteRemoveSnackBar(
         holder: RecyclerView.ViewHolder,
         index: Int,
-        item: Movie
+        item: MovieModel
     ) {
         holder.apply {
             var counter = 3
@@ -109,11 +109,11 @@ class FavoriteListAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieModel>() {
+            override fun areItemsTheSame(oldItem: MovieModel, newItem: MovieModel) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
+            override fun areContentsTheSame(oldItem: MovieModel, newItem: MovieModel) =
                 oldItem == newItem
         }
 

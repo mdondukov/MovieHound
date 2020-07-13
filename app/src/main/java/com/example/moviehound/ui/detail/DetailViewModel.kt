@@ -3,27 +3,25 @@ package com.example.moviehound.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviehound.api.ServiceGenerator
-import com.example.moviehound.api.State
-import com.example.moviehound.data.MovieUseCase
-import com.example.moviehound.model.Movie
+import com.example.moviehound.api.NetworkState
+import com.example.moviehound.data.DetailRepository
+import com.example.moviehound.model.DetailModel
 
-class DetailViewModel : ViewModel() {
-    private val movieUseCase = ServiceGenerator.movieUseCase
-    private val movieLiveData = MutableLiveData<Movie>()
+class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
+    private val movieDetailLiveData = MutableLiveData<DetailModel>()
 
-    val movie: LiveData<Movie>
-        get() = movieLiveData
+    val movieDetail: LiveData<DetailModel>
+        get() = movieDetailLiveData
 
-    fun getMovie(movieId: Int) {
-        movieUseCase.load(movieId, object : MovieUseCase.GetMovieCallback {
-            override fun onSuccess(item: Movie) {
-                movieLiveData.postValue(item)
+    fun getDetails(movieId: Int) {
+        repository.getDetails(movieId, object : DetailRepository.GetMovieCallback {
+            override fun onSuccess(item: DetailModel) {
+                movieDetailLiveData.postValue(item)
             }
         })
     }
 
-    fun getNetworkState(): LiveData<State> {
-        return movieUseCase.state
+    fun getNetworkState(): LiveData<NetworkState> {
+        return repository.state
     }
 }

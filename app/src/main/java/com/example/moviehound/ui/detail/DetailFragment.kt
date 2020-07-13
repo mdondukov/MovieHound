@@ -15,9 +15,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.moviehound.AppActivity
+import com.example.moviehound.Injection
 import com.example.moviehound.R
-import com.example.moviehound.api.State
-import com.example.moviehound.model.Movie
+import com.example.moviehound.api.Status
+import com.example.moviehound.model.DetailModel
+import com.example.moviehound.model.MovieModel
 import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.SharedViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -25,17 +27,15 @@ import com.google.android.material.snackbar.Snackbar
 class DetailFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var detailViewModel: DetailViewModel
-    private lateinit var movie: Movie
+    private lateinit var movie: MovieModel
     private lateinit var toolbar: Toolbar
-    private lateinit var overlay: View
-    private lateinit var progress: View
     private lateinit var posterIv: ImageView
     private lateinit var backdropIv: ImageView
     private lateinit var titleTv: TextView
     private lateinit var originalTitleTv: TextView
-    private lateinit var taglineTv: TextView
+    private lateinit var titleAndReleaseDateTv: TextView
     private lateinit var genresTv: TextView
-    private lateinit var metainfoTv: TextView
+    private lateinit var countryBudgetRuntimeTv: TextView
     private lateinit var ratingTv: TextView
     private lateinit var voteCountTv: TextView
     private lateinit var overviewTv: TextView
@@ -43,7 +43,7 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteLl: LinearLayout
     private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-    private val favoriteList = ArrayList<Movie>()
+    private val favoriteList = ArrayList<MovieModel>()
     private var movieId = 0
 
     override fun onCreateView(
@@ -63,22 +63,23 @@ class DetailFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
             .get(SharedViewModel::class.java)
 
-        sharedViewModel.selectedId.observe(viewLifecycleOwner, Observer {
-            movieId = it
-            detailViewModel.getMovie(movieId)
+        detailViewModel = ViewModelProvider(this, Injection.provideDetailViewModelFactory())
+            .get(DetailViewModel::class.java)
+
+        sharedViewModel.selected.observe(viewLifecycleOwner, Observer {
+            showMovie(it)
+            movieId = it.id
+            detailViewModel.getDetails(movieId)
         })
+
+        detailViewModel.movieDetail.observe(viewLifecycleOwner, Observer { showDetails(it) })
+
+        initState()
 
         sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
             favoriteList.clear()
             favoriteList.addAll(it)
         })
-
-        detailViewModel = ViewModelProvider(this, MainViewModelFactory())
-            .get(DetailViewModel::class.java)
-
-        detailViewModel.movie.observe(viewLifecycleOwner, Observer { setData(it) })
-
-        initState()
 
         toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
 
@@ -104,8 +105,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        overlay = view.findViewById(R.id.overlay)
-        progress = view.findViewById(R.id.progress_bar)
         toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppActivity).apply {
             setSupportActionBar(toolbar)
@@ -118,9 +117,9 @@ class DetailFragment : Fragment() {
         backdropIv = view.findViewById(R.id.backdrop_iv)
         titleTv = view.findViewById(R.id.title_tv)
         originalTitleTv = view.findViewById(R.id.original_title_tv)
-        taglineTv = view.findViewById(R.id.tagline_tv)
+        titleAndReleaseDateTv = view.findViewById(R.id.title_and_release_date_tv)
         genresTv = view.findViewById(R.id.genres_tv)
-        metainfoTv = view.findViewById(R.id.metainfo_tv)
+        countryBudgetRuntimeTv = view.findViewById(R.id.country_budget_runtime_tv)
         ratingTv = view.findViewById(R.id.rating_tv)
         voteCountTv = view.findViewById(R.id.vote_count_tv)
         overviewTv = view.findViewById(R.id.overview_tv)
@@ -130,7 +129,7 @@ class DetailFragment : Fragment() {
         inviteLl = view.findViewById(R.id.invite_layout)
     }
 
-    private fun setData(item: Movie) {
+    private fun showMovie(item: MovieModel) {
         movie = item
 
         Glide.with(this)
@@ -146,24 +145,14 @@ class DetailFragment : Fragment() {
         titleTv.text = movie.title
         originalTitleTv.text = movie.originalTitle
         overviewTv.text = movie.overview
-
-        if (movie.tagline.isEmpty())
-            taglineTv.visibility = View.GONE
-        else
-            taglineTv.text = movie.tagline
-
-        genresTv.text =
-            (movie.genres.flatMap { listOf(it.name) }).joinToString(", ")
-
-        metainfoTv.text = context?.resources?.getString(
-            R.string.metainfo,
-            (movie.releaseDate).substring(0, 4),
-            (movie.productionCountries.flatMap { listOf(it.name) }).joinToString(", "),
-            movie.runtime
-        )
-
         ratingTv.text = movie.rating.toString()
         voteCountTv.text = context?.resources?.getString(R.string.vote_count, movie.voteCount)
+
+        titleAndReleaseDateTv.text = context?.resources?.getString(
+            R.string.title_and_release_date,
+            movie.title,
+            (movie.releaseDate).substring(0, 4)
+        )
 
         if (favoriteList.size != 0) {
             val itemExists: Boolean = checkAvailability(favoriteList, movie)
@@ -173,39 +162,30 @@ class DetailFragment : Fragment() {
         } else setFavoriteStatus(favoriteIv, false)
     }
 
-    private fun checkAvailability(favorites: ArrayList<Movie>, item: Movie): Boolean {
-        for (movie: Movie in favorites) {
-            if (movie.id == item.id) return true
-        }
-        return false
-    }
+    private fun showDetails(details: DetailModel) {
+        genresTv.text =
+            (details.genres.flatMap { listOf(it.name) }).joinToString(", ")
 
-    private fun setFavoriteStatus(view: View, status: Boolean) {
-        view.isSelected = status
+        countryBudgetRuntimeTv.text =
+            if (details.budget != 0) {
+                context?.resources?.getString(
+                    R.string.country_budget_runtime,
+                    (details.productionCountries.flatMap { listOf(it.name) }).joinToString(", "),
+                    details.budget.div(1000000),
+                    details.runtime
+                )
+            } else {
+                context?.resources?.getString(
+                    R.string.country_and_runtime,
+                    (details.productionCountries.flatMap { listOf(it.name) }).joinToString(", "),
+                    details.runtime
+                )
+            }
     }
 
     private fun initState() {
-        detailViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer {
-            when (it) {
-                State.LOADING -> {
-                    overlay.visibility = View.VISIBLE
-                    progress.visibility = View.VISIBLE
-                }
-                State.DONE -> {
-                    overlay.visibility = View.GONE
-                }
-                State.ERROR -> {
-                    overlay.visibility = View.VISIBLE
-                    progress.visibility = View.GONE
-                    showErrorSnackBar(resources.getString(R.string.server_error))
-                }
-                State.FAIL -> {
-                    overlay.visibility = View.VISIBLE
-                    progress.visibility = View.GONE
-                    showErrorSnackBar(resources.getString(R.string.internet_fail))
-                }
-                else -> overlay.visibility = View.GONE
-            }
+        detailViewModel.getNetworkState().observe(this.viewLifecycleOwner, Observer { state ->
+            if (state?.status == Status.FAILED) state.msg?.let { showErrorSnackBar(it) }
         })
     }
 
@@ -213,8 +193,24 @@ class DetailFragment : Fragment() {
         Snackbar
             .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
             .setAction(getString(R.string.retry)) {
-                detailViewModel.getMovie(movieId)
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w1280${movie.backdrop}")
+                    .transform(CenterCrop())
+                    .into(backdropIv)
+
+                detailViewModel.getDetails(movieId)
             }
             .show()
+    }
+
+    private fun checkAvailability(favorites: ArrayList<MovieModel>, item: MovieModel): Boolean {
+        for (movie: MovieModel in favorites) {
+            if (movie.id == item.id) return true
+        }
+        return false
+    }
+
+    private fun setFavoriteStatus(view: View, status: Boolean) {
+        view.isSelected = status
     }
 }
