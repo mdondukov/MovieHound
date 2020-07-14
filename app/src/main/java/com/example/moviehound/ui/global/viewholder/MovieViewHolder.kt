@@ -13,6 +13,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val posterIv: ImageView = itemView.findViewById(R.id.poster_iv)
     private val titleTv: TextView = itemView.findViewById(R.id.title_tv)
     private val ratingTv: TextView = itemView.findViewById(R.id.rating_tv)
+    private val isFavoriteIv: ImageView = itemView.findViewById(R.id.favorite_iv)
 
     fun bind(item: MovieModel) {
 
@@ -23,5 +24,6 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         titleTv.text = item.title
         ratingTv.text = item.rating.toString()
+        isFavoriteIv.isSelected = item.isFavorite
     }
 }

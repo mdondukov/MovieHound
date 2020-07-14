@@ -38,7 +38,7 @@ class MovieBoundaryCallback(
         getMovies(service, lastRequestedPage, { movieResponse ->
             val data = movieResponse.movies
             val items = data?.map { it } ?: emptyList()
-            cache.insert(items) {
+            cache.insertAll(items) {
                 lastRequestedPage++
                 updateState(NetworkState.DONE)
                 isRequestInProgress = false

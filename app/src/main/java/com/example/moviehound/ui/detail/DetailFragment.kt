@@ -20,7 +20,6 @@ import com.example.moviehound.R
 import com.example.moviehound.api.Status
 import com.example.moviehound.model.DetailModel
 import com.example.moviehound.model.MovieModel
-import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.SharedViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -43,7 +42,6 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteLl: LinearLayout
     private lateinit var inviteLl: LinearLayout
     private lateinit var favoriteIv: ImageView
-    private val favoriteList = ArrayList<MovieModel>()
     private var movieId = 0
 
     override fun onCreateView(
@@ -60,8 +58,12 @@ class DetailFragment : Fragment() {
 
         initViews(view)
 
-        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
-            .get(SharedViewModel::class.java)
+        sharedViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                Injection.provideShareViewModelFactory(requireContext())
+            )
+                .get(SharedViewModel::class.java)
 
         detailViewModel = ViewModelProvider(this, Injection.provideDetailViewModelFactory())
             .get(DetailViewModel::class.java)
@@ -76,23 +78,8 @@ class DetailFragment : Fragment() {
 
         initState()
 
-        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
-            favoriteList.clear()
-            favoriteList.addAll(it)
-        })
-
         toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
-
-        favoriteLl.setOnClickListener {
-            if (favoriteIv.isSelected) {
-                setFavoriteStatus(favoriteIv, false)
-                sharedViewModel.removeFavoriteMovie(movie)
-            } else {
-                setFavoriteStatus(favoriteIv, true)
-                sharedViewModel.addFavoriteMovie(movie)
-            }
-        }
-
+        favoriteLl.setOnClickListener { switchFavoriteStatus() }
         inviteLl.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
@@ -147,19 +134,16 @@ class DetailFragment : Fragment() {
         overviewTv.text = movie.overview
         ratingTv.text = movie.rating.toString()
         voteCountTv.text = context?.resources?.getString(R.string.vote_count, movie.voteCount)
-
         titleAndReleaseDateTv.text = context?.resources?.getString(
             R.string.title_and_release_date,
             movie.title,
             (movie.releaseDate).substring(0, 4)
         )
+        showFavoriteStatus()
+    }
 
-        if (favoriteList.size != 0) {
-            val itemExists: Boolean = checkAvailability(favoriteList, movie)
-            if (itemExists) setFavoriteStatus(favoriteIv, true)
-            else setFavoriteStatus(favoriteIv, false)
-
-        } else setFavoriteStatus(favoriteIv, false)
+    private fun showFavoriteStatus() {
+        favoriteIv.isSelected = movie.isFavorite
     }
 
     private fun showDetails(details: DetailModel) {
@@ -189,6 +173,12 @@ class DetailFragment : Fragment() {
         })
     }
 
+    private fun switchFavoriteStatus() {
+        movie.isFavorite = !movie.isFavorite
+        sharedViewModel.updateFavoriteStatus(movie)
+        showFavoriteStatus()
+    }
+
     private fun showErrorSnackBar(msg: String) {
         Snackbar
             .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
@@ -201,16 +191,5 @@ class DetailFragment : Fragment() {
                 detailViewModel.getDetails(movieId)
             }
             .show()
-    }
-
-    private fun checkAvailability(favorites: ArrayList<MovieModel>, item: MovieModel): Boolean {
-        for (movie: MovieModel in favorites) {
-            if (movie.id == item.id) return true
-        }
-        return false
-    }
-
-    private fun setFavoriteStatus(view: View, status: Boolean) {
-        view.isSelected = status
     }
 }

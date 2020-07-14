@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviehound.AppActivity
+import com.example.moviehound.Injection
 import com.example.moviehound.R
-import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
@@ -34,8 +34,12 @@ class FavoriteListFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
 
-        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
-            .get(SharedViewModel::class.java)
+        sharedViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                Injection.provideShareViewModelFactory(requireContext())
+            )
+                .get(SharedViewModel::class.java)
 
         val recycler = view.findViewById<RecyclerView>(R.id.favorite_movie_list)
         initRecycler(recycler)

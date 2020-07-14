@@ -15,8 +15,6 @@ import com.example.moviehound.Injection
 import com.example.moviehound.R
 import com.example.moviehound.api.NetworkState
 import com.example.moviehound.api.Status
-import com.example.moviehound.model.MovieModel
-import com.example.moviehound.ui.global.MainViewModelFactory
 import com.example.moviehound.ui.global.OnMovieListClickListener
 import com.example.moviehound.ui.global.SharedViewModel
 import com.example.moviehound.ui.global.itemdecoration.MovieItemDecoration
@@ -29,7 +27,6 @@ class MovieListFragment : Fragment() {
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MovieListAdapter
     private lateinit var progress: View
-    private val favoriteList = ArrayList<MovieModel>()
     private var listener: OnMovieListClickListener? = null
 
     override fun onCreateView(
@@ -43,20 +40,18 @@ class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as AppActivity).setSupportActionBar(toolbar)
-
-        sharedViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory())
-            .get(SharedViewModel::class.java)
-
-        movieListViewModel =
-            ViewModelProvider(this, Injection.provideMovieViewModelFactory(context!!))
-                .get(MovieListViewModel::class.java)
-
         progress = view.findViewById(R.id.progress_bar)
 
-        sharedViewModel.getFavoriteList().observe(viewLifecycleOwner, Observer {
-            favoriteList.clear()
-            favoriteList.addAll(it)
-        })
+        sharedViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                Injection.provideShareViewModelFactory(requireContext())
+            )
+                .get(SharedViewModel::class.java)
+
+        movieListViewModel =
+            ViewModelProvider(this, Injection.provideMovieViewModelFactory(requireContext()))
+                .get(MovieListViewModel::class.java)
 
         initRecycler(view)
         initState()
@@ -70,8 +65,7 @@ class MovieListFragment : Fragment() {
 
         adapter = MovieListAdapter(
             LayoutInflater.from(context),
-            sharedViewModel,
-            favoriteList
+            sharedViewModel
         ) {
             listener?.onMovieClick()
         }
@@ -85,7 +79,9 @@ class MovieListFragment : Fragment() {
 
         movieListViewModel.movieList.observe(
             this.viewLifecycleOwner,
-            Observer { adapter.submitList(it) }
+            Observer {
+                adapter.submitList(it)
+            }
         )
     }
 
@@ -103,7 +99,7 @@ class MovieListFragment : Fragment() {
     private fun showErrorSnackBar(msg: String) {
         Snackbar
             .make(this.requireView(), msg, Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.retry)) { movieListViewModel.retry() }
+            .setAction(getString(R.string.retry)) { movieListViewModel.getMovies() }
             .show()
     }
 

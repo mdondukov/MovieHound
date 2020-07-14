@@ -21,7 +21,7 @@ data class MovieModel(
     @SerializedName("vote_average") val rating: Float,
     @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("release_date") val releaseDate: String,
-    @ColumnInfo(name = "is_favorite") var isFavorite: Boolean? = false
+    @ColumnInfo(name = "is_favorite") var isFavorite: Boolean = false
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -33,6 +33,7 @@ data class MovieModel(
         if (poster != other.poster) return false
         if (title != other.title) return false
         if (rating != other.rating) return false
+        if (isFavorite != other.isFavorite) return false
 
         return true
     }
@@ -42,6 +43,7 @@ data class MovieModel(
         result = 31 * result + poster.hashCode()
         result = 31 * result + title.hashCode()
         result = 31 * result + rating.hashCode()
+        result = 31 * result + isFavorite.hashCode()
         return result
     }
 }

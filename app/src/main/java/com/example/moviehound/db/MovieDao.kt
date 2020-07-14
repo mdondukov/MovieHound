@@ -16,7 +16,7 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE id = :id")
     fun getMovie(id: Int): LiveData<MovieModel>
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(movie: MovieModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

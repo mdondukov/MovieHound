@@ -15,7 +15,6 @@ import com.example.moviehound.ui.global.viewholder.MovieViewHolder
 class MovieListAdapter(
     private val inflater: LayoutInflater,
     private val sharedViewModel: SharedViewModel,
-    private var favoriteList: ArrayList<MovieModel>,
     private val listener: () -> Unit
 ) : PagedListAdapter<MovieModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
@@ -39,22 +38,7 @@ class MovieListAdapter(
                 val favoriteImageView: ImageView =
                     holder.itemView.findViewById(R.id.favorite_iv)
 
-                if (favoriteList.isNotEmpty()) {
-                    val itemExists: Boolean = checkAvailability(favoriteList, item)
-                    if (itemExists) setFavoriteStatus(favoriteImageView, true)
-                    else setFavoriteStatus(favoriteImageView, false)
-
-                } else setFavoriteStatus(favoriteImageView, false)
-
-                favoriteImageView.setOnClickListener {
-                    if (it.isSelected) {
-                        setFavoriteStatus(it, false)
-                        sharedViewModel.removeFavoriteMovie(item)
-                    } else {
-                        setFavoriteStatus(it, true)
-                        sharedViewModel.addFavoriteMovie(item)
-                    }
-                }
+                favoriteImageView.setOnClickListener { switchFavoriteStatus(it, item) }
 
                 holder.itemView.findViewById<View>(R.id.movie_layout)
                     .setOnClickListener {
@@ -65,15 +49,10 @@ class MovieListAdapter(
         }
     }
 
-    private fun checkAvailability(favorites: ArrayList<MovieModel>, item: MovieModel): Boolean {
-        for (movie: MovieModel in favorites) {
-            if (movie.id == item.id) return true
-        }
-        return false
-    }
-
-    private fun setFavoriteStatus(view: View, status: Boolean) {
-        view.isSelected = status
+    private fun switchFavoriteStatus(view: View, movie: MovieModel) {
+        view.isSelected = !view.isSelected
+        movie.isFavorite = !movie.isFavorite
+        sharedViewModel.updateFavoriteStatus(movie)
     }
 
     companion object {

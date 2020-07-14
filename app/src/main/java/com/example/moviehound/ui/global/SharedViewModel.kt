@@ -3,13 +3,13 @@ package com.example.moviehound.ui.global
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moviehound.data.MovieRepository
 import com.example.moviehound.model.MovieModel
 
-class SharedViewModel: ViewModel() {
+class SharedViewModel(
+    private val repository: MovieRepository
+) : ViewModel() {
     private val selectedMovieLiveData = MutableLiveData<MovieModel>()
-    private val favoriteListLiveData = MutableLiveData<List<MovieModel>>()
-
-    private val favorites = ArrayList<MovieModel>()
 
     val selected: LiveData<MovieModel>
         get() = selectedMovieLiveData
@@ -19,23 +19,10 @@ class SharedViewModel: ViewModel() {
     }
 
     fun getFavoriteList(): LiveData<List<MovieModel>> {
-        loadFavoriteList()
-        return favoriteListLiveData
+        return repository.favorites()
     }
 
-    private fun loadFavoriteList() {
-        favoriteListLiveData.postValue(favorites)
-    }
-
-    fun addFavoriteMovie(movie: MovieModel) {
-        favorites.add(movie)
-    }
-
-    fun insertFavoriteMovie(index: Int, movie: MovieModel) {
-        favorites.add(index, movie)
-    }
-
-    fun removeFavoriteMovie(movie: MovieModel) {
-        favorites.remove(movie)
+    fun updateFavoriteStatus(movie: MovieModel) {
+        repository.update(movie)
     }
 }

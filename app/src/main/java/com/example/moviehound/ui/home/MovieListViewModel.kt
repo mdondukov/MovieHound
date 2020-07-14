@@ -6,18 +6,18 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.example.moviehound.api.NetworkState
-import com.example.moviehound.data.MovieListRepository
+import com.example.moviehound.data.MovieRepository
 import com.example.moviehound.model.MovieModel
 import com.example.moviehound.model.MovieResult
 
 class MovieListViewModel(
-    private val repository: MovieListRepository
+    private val repository: MovieRepository
 ) : ViewModel() {
 
     private val movieResult = MutableLiveData<MovieResult>()
 
     init {
-        retry()
+        getMovies()
     }
 
     val movieList: LiveData<PagedList<MovieModel>> =
@@ -30,7 +30,7 @@ class MovieListViewModel(
         return movieList.value?.isEmpty() ?: true
     }
 
-    fun retry() {
+    fun getMovies() {
         movieResult.postValue(repository.movies())
     }
 }

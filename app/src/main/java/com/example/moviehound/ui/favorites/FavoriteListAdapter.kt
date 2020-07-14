@@ -41,14 +41,12 @@ class FavoriteListAdapter(
             val favoriteImageView: ImageView =
                 holder.itemView.findViewById(R.id.favorite_iv)
 
-            if (differ.currentList.size != 0) favoriteImageView.isSelected = true
+//            if (differ.currentList.size != 0) favoriteImageView.isSelected = true
 
             favoriteImageView.setOnClickListener {
-                it.isSelected = false
-                val index = differ.currentList.indexOf(item)
-                sharedViewModel.removeFavoriteMovie(item)
-                notifyItemRemoved(index)
-                getFavoriteRemoveSnackBar(holder, index, item)
+                switchFavoriteStatus(it, item)
+                notifyDataSetChanged()
+//                getFavoriteRemoveSnackBar(holder, item)
             }
 
             holder.itemView.findViewById<View>(R.id.movie_layout)
@@ -61,9 +59,14 @@ class FavoriteListAdapter(
 
     fun submitList(movies: List<MovieModel>) = differ.submitList(movies)
 
+    private fun switchFavoriteStatus(view: View, movie: MovieModel) {
+        view.isSelected = !view.isSelected
+        movie.isFavorite = !movie.isFavorite
+        sharedViewModel.updateFavoriteStatus(movie)
+    }
+
     private fun getFavoriteRemoveSnackBar(
         holder: RecyclerView.ViewHolder,
-        index: Int,
         item: MovieModel
     ) {
         holder.apply {
@@ -100,8 +103,8 @@ class FavoriteListAdapter(
             snackbar.apply {
                 addCallback(snCallback)
                 setAction(itemView.context.resources.getString(R.string.cancel)) {
-                    sharedViewModel.insertFavoriteMovie(index, item)
-                    notifyItemInserted(index)
+                    switchFavoriteStatus(itemView, item)
+                    notifyDataSetChanged()
                 }
                 show()
             }
